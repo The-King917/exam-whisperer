@@ -5,8 +5,7 @@ export default async function handler(req, res) {
   if (!syllabus) return res.status(400).json({ error: 'No syllabus provided' });
 
   // YOUR API KEY - make sure this is correct
-  const API_KEY = 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;
-
+  const API_KEY = process.env.ANTHROPIC_API_KEY;
   const styleNote = writing ? `\n\nThe student's writing style (match this EXACTLY in vocabulary, sentence structure, and tone): "${writing}"` : '';
 
   try {
