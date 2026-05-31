@@ -6,43 +6,329 @@
 <title>Exam Whisperer</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f13; color: #fff; min-height: 100vh; }
-  .header { padding: 20px 32px; border-bottom: 1px solid #1e1e2e; display: flex; align-items: center; gap: 10px; }
-  .logo { font-size: 18px; font-weight: 600; color: #fff; }
-  .logo span { color: #7c6af7; }
-  .badge { font-size: 11px; background: #1e1a3e; color: #7c6af7; border-radius: 20px; padding: 3px 10px; border: 1px solid #2e2a5e; }
-  .main { max-width: 820px; margin: 0 auto; padding: 48px 24px; }
-  .hero { text-align: center; margin-bottom: 48px; }
-  .hero h1 { font-size: 36px; font-weight: 700; line-height: 1.2; margin-bottom: 12px; }
-  .hero h1 span { color: #7c6af7; }
-  .hero p { font-size: 15px; color: #888; }
-  .card { background: #16161f; border: 1px solid #1e1e2e; border-radius: 14px; padding: 24px; margin-bottom: 16px; }
-  .card-title { font-size: 13px; font-weight: 500; color: #888; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
-  textarea { width: 100%; background: #0f0f13; border: 1px solid #1e1e2e; border-radius: 10px; padding: 14px; font-size: 14px; color: #fff; resize: vertical; font-family: inherit; outline: none; transition: border 0.2s; }
-  textarea:focus { border-color: #7c6af7; }
-  textarea::placeholder { color: #444; }
-  .btn { width: 100%; background: #7c6af7; color: white; border: none; border-radius: 10px; padding: 14px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 12px; transition: background 0.2s, transform 0.1s; }
-  .btn:hover { background: #6a59e0; }
-  .btn:active { transform: scale(0.99); }
-  .btn:disabled { background: #2a2a3a; color: #555; cursor: not-allowed; }
-  .loading { text-align: center; padding: 32px; color: #555; font-size: 14px; display: none; }
-  .spinner { width: 28px; height: 28px; border: 2px solid #1e1e2e; border-top-color: #7c6af7; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .results { display: none; }
-  .q-card { background: #16161f; border: 1px solid #1e1e2e; border-radius: 12px; padding: 16px 18px; margin-bottom: 10px; display: flex; gap: 14px; align-items: flex-start; }
-  .q-num { font-size: 11px; font-weight: 600; color: #7c6af7; background: #1e1a3e; border-radius: 6px; padding: 3px 8px; flex-shrink: 0; margin-top: 2px; }
-  .q-text { font-size: 14px; color: #e0e0e0; line-height: 1.5; flex: 1; }
-  .q-conf { font-size: 11px; font-weight: 600; margin-top: 4px; }
-  .conf-high { color: #34d399; }
-  .conf-mid { color: #7c6af7; }
-  .conf-low { color: #f59e0b; }
-  .ans-box { background: #0f0f13; border: 1px solid #1e1e2e; border-radius: 10px; padding: 16px; font-size: 14px; color: #ccc; line-height: 1.7; white-space: pre-wrap; margin-top: 12px; min-height: 80px; }
-  .section-label { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: #7c6af7; }
-  .error { background: #1f0f0f; border: 1px solid #3f1f1f; border-radius: 10px; padding: 14px 16px; font-size: 13px; color: #f87171; margin-top: 12px; display: none; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0a0a1a 0%, #0a0a2a 100%);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* Holographic Brain Canvas */
+  #brainCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  
+  .header {
+    position: relative;
+    z-index: 10;
+    padding: 20px 32px;
+    border-bottom: 1px solid rgba(66, 153, 225, 0.3);
+    background: rgba(10, 10, 26, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .logo {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+  }
+  
+  .logo span {
+    color: #4299e1;
+    text-shadow: 0 0 10px rgba(66, 153, 225, 0.5);
+  }
+  
+  .badge {
+    font-size: 11px;
+    background: rgba(66, 153, 225, 0.2);
+    color: #4299e1;
+    border-radius: 20px;
+    padding: 3px 10px;
+    border: 1px solid rgba(66, 153, 225, 0.5);
+  }
+  
+  .main {
+    position: relative;
+    z-index: 10;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+  
+  .hero {
+    text-align: center;
+    margin-bottom: 48px;
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 24px;
+    padding: 32px;
+  }
+  
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 0%, #4299e1 50%, #1a1a3a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .hero h1 span {
+    background: linear-gradient(135deg, #4299e1 0%, #7c6af7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .hero p {
+    font-size: 15px;
+    color: #a0aec0;
+  }
+  
+  .card {
+    background: rgba(22, 22, 31, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(66, 153, 225, 0.3);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    border-color: rgba(66, 153, 225, 0.6);
+    box-shadow: 0 0 20px rgba(66, 153, 225, 0.1);
+  }
+  
+  .card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #4299e1;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  textarea {
+    width: 100%;
+    background: rgba(15, 15, 19, 0.9);
+    border: 1px solid rgba(66, 153, 225, 0.3);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+    color: #e2e8f0;
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.2s;
+  }
+  
+  textarea:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 10px rgba(66, 153, 225, 0.3);
+  }
+  
+  textarea::placeholder {
+    color: #4a5568;
+  }
+  
+  .btn {
+    width: 100%;
+    background: linear-gradient(135deg, #4299e1 0%, #2b6cb0 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(66, 153, 225, 0.3);
+  }
+  
+  .btn:active {
+    transform: translateY(0);
+  }
+  
+  .btn:disabled {
+    background: #2d3748;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 32px;
+    color: #a0aec0;
+    font-size: 14px;
+    display: none;
+  }
+  
+  .spinner {
+    width: 28px;
+    height: 28px;
+    border: 2px solid rgba(66, 153, 225, 0.3);
+    border-top-color: #4299e1;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .results {
+    display: none;
+  }
+  
+  .q-card {
+    background: rgba(22, 22, 31, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(66, 153, 225, 0.3);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: all 0.3s ease;
+  }
+  
+  .q-card:hover {
+    border-color: rgba(66, 153, 225, 0.6);
+    transform: translateX(5px);
+  }
+  
+  .q-num {
+    font-size: 11px;
+    font-weight: 600;
+    color: #4299e1;
+    background: rgba(66, 153, 225, 0.2);
+    border-radius: 6px;
+    padding: 3px 8px;
+    flex-shrink: 0;
+  }
+  
+  .q-text {
+    font-size: 14px;
+    color: #e2e8f0;
+    line-height: 1.5;
+    flex: 1;
+  }
+  
+  .q-conf {
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  
+  .conf-high {
+    color: #34d399;
+  }
+  
+  .conf-mid {
+    color: #4299e1;
+  }
+  
+  .conf-low {
+    color: #f59e0b;
+  }
+  
+  .ans-box {
+    background: rgba(10, 10, 26, 0.9);
+    border: 1px solid rgba(66, 153, 225, 0.3);
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 14px;
+    color: #cbd5e0;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    margin-top: 12px;
+  }
+  
+  .section-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4299e1;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4299e1;
+    box-shadow: 0 0 8px rgba(66, 153, 225, 0.6);
+  }
+  
+  .error {
+    background: rgba(31, 15, 15, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(248, 113, 113, 0.5);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #f87171;
+    margin-top: 12px;
+    display: none;
+  }
+  
+  /* Black and Blue text accents */
+  .blue-text {
+    color: #4299e1;
+  }
+  
+  .dark-text {
+    color: #1a202c;
+  }
+  
+  /* Floating words animation */
+  @keyframes floatWord {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.8;
+    }
+    90% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+      opacity: 0;
+    }
+  }
 </style>
 </head>
 <body>
+
+<canvas id="brainCanvas"></canvas>
 
 <div class="header">
   <div class="logo"><span>Exam</span> Whisperer</div>
@@ -57,12 +343,12 @@
 
   <div class="card">
     <div class="card-title">Paste your syllabus, past exams, or class notes</div>
-    <textarea id="syllabus" rows="7" placeholder="Paste anything — syllabus, lecture notes, past FRQs, textbook chapters..."></textarea>
+    <textarea id="syllabus" rows="7" placeholder="Paste your AP course syllabus here..."></textarea>
   </div>
 
   <div class="card">
     <div class="card-title">Paste a sample of your own writing (optional)</div>
-    <textarea id="writing" rows="4" placeholder="Paste 2-3 sentences from a past essay..."></textarea>
+    <textarea id="writing" rows="4" placeholder="Paste a past essay or response..."></textarea>
   </div>
 
   <button class="btn" id="predictBtn" onclick="predict()">Predict my exam questions</button>
@@ -85,6 +371,262 @@
 </div>
 
 <script>
+// Holographic Brain Animation
+const canvas = document.getElementById('brainCanvas');
+const ctx = canvas.getContext('2d');
+
+let width, height;
+let particles = [];
+let floatingWords = [];
+let time = 0;
+
+// Brain shape vertices (simplified brain outline)
+const brainShape = [];
+function generateBrainShape() {
+  // Create a brain-like shape using sine waves
+  for (let i = 0; i <= 100; i++) {
+    const t = i / 100;
+    const angle = t * Math.PI * 2;
+    const x = Math.sin(angle) * (2 + Math.sin(angle * 3) * 0.5);
+    const y = Math.cos(angle) * (1.5 + Math.cos(angle * 2) * 0.3);
+    brainShape.push({ x, y });
+  }
+}
+
+// Words to float around the brain
+const words = [
+  "Neuroscience", "Memory", "Learning", "Cognition", "Brain Waves",
+  "Synapse", "Neuron", "Cortex", "Amygdala", "Hippocampus",
+  "Dopamine", "Serotonin", "Plasticity", "Attention", "Focus",
+  "IQ", "EQ", "Mindfulness", "Meditation", "Consciousness",
+  "Perception", "Thinking", "Problem Solving", "Creativity", "Intelligence"
+];
+
+class FloatingWord {
+  constructor(x, y, word) {
+    this.x = x;
+    this.y = y;
+    this.word = word;
+    this.angle = Math.random() * Math.PI * 2;
+    this.radius = 80 + Math.random() * 100;
+    this.speed = 0.005 + Math.random() * 0.01;
+    this.opacity = 0.3 + Math.random() * 0.5;
+    this.size = 10 + Math.random() * 8;
+  }
+  
+  update(centerX, centerY, time) {
+    this.angle += this.speed;
+    this.x = centerX + Math.cos(this.angle + time) * this.radius;
+    this.y = centerY + Math.sin(this.angle * 0.7 + time) * this.radius * 0.8;
+  }
+  
+  draw(ctx) {
+    ctx.save();
+    ctx.font = `${this.size}px "Segoe UI", Arial`;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = `rgba(66, 153, 225, ${this.opacity * 0.5})`;
+    ctx.fillStyle = `rgba(66, 153, 225, ${this.opacity * 0.7})`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(this.word, this.x, this.y);
+    ctx.restore();
+  }
+}
+
+class Particle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.vx = (Math.random() - 0.5) * 2;
+    this.vy = (Math.random() - 0.5) * 2;
+    this.life = 1;
+    this.decay = 0.02;
+  }
+  
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life -= this.decay;
+    return this.life > 0;
+  }
+  
+  draw(ctx) {
+    ctx.save();
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = `rgba(66, 153, 225, ${this.life * 0.8})`;
+    ctx.fillStyle = `rgba(66, 153, 225, ${this.life * 0.6})`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+let particlesList = [];
+
+function drawBrain(ctx, centerX, centerY, size, time) {
+  ctx.save();
+  ctx.shadowBlur = 20;
+  ctx.shadowColor = 'rgba(66, 153, 225, 0.5)';
+  ctx.strokeStyle = 'rgba(66, 153, 225, 0.6)';
+  ctx.fillStyle = 'rgba(66, 153, 225, 0.05)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  
+  // Draw the brain shape with holographic effect
+  for (let i = 0; i < brainShape.length; i++) {
+    const point = brainShape[i];
+    const x = centerX + point.x * size;
+    const y = centerY + point.y * size + Math.sin(time * 2 + i * 0.1) * 3;
+    
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+  
+  // Draw inner brain folds (gyri)
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(66, 153, 225, 0.3)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 20; i++) {
+    const angle = (i / 20) * Math.PI * 2;
+    const radius = size * (0.6 + Math.sin(time + i) * 0.05);
+    const x = centerX + Math.cos(angle + time) * radius;
+    const y = centerY + Math.sin(angle * 1.5 + time) * radius * 0.8;
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  
+  // Draw glowing center
+  const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, size * 0.3);
+  gradient.addColorStop(0, 'rgba(66, 153, 225, 0.3)');
+  gradient.addColorStop(1, 'rgba(66, 153, 225, 0)');
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, size * 0.4, 0, Math.PI * 2);
+  ctx.fill();
+  
+  ctx.restore();
+}
+
+function drawNeuralConnections(ctx, centerX, centerY, size, time) {
+  ctx.save();
+  ctx.strokeStyle = 'rgba(66, 153, 225, 0.2)';
+  ctx.lineWidth = 1;
+  
+  const points = [];
+  for (let i = 0; i < 30; i++) {
+    const angle = (i / 30) * Math.PI * 2 + time;
+    const radius = size * (0.7 + Math.sin(time * 2 + i) * 0.1);
+    points.push({
+      x: centerX + Math.cos(angle) * radius,
+      y: centerY + Math.sin(angle * 1.3) * radius * 0.9
+    });
+  }
+  
+  for (let i = 0; i < points.length; i++) {
+    for (let j = i + 1; j < points.length; j++) {
+      if (Math.random() < 0.05) {
+        ctx.beginPath();
+        ctx.moveTo(points[i].x, points[i].y);
+        ctx.lineTo(points[j].x, points[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  
+  ctx.restore();
+}
+
+function animate() {
+  if (!canvas) return;
+  
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+  
+  ctx.clearRect(0, 0, width, height);
+  
+  const centerX = width / 2;
+  const centerY = height / 2;
+  const size = Math.min(width, height) * 0.25;
+  
+  time += 0.02;
+  
+  // Draw holographic rings
+  for (let i = 0; i < 3; i++) {
+    ctx.save();
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = `rgba(66, 153, 225, ${0.2 - i * 0.05})`;
+    ctx.strokeStyle = `rgba(66, 153, 225, ${0.15 - i * 0.03})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY, size * (1 + i * 0.3), size * (0.8 + i * 0.2), 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+  
+  // Draw neural connections
+  drawNeuralConnections(ctx, centerX, centerY, size, time);
+  
+  // Draw brain
+  drawBrain(ctx, centerX, centerY, size, time);
+  
+  // Update and draw floating words
+  if (floatingWords.length === 0) {
+    for (let i = 0; i < 25; i++) {
+      const angle = (i / 25) * Math.PI * 2;
+      const radius = size + 60;
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius * 0.8;
+      floatingWords.push(new FloatingWord(x, y, words[i % words.length]));
+    }
+  }
+  
+  floatingWords.forEach(word => {
+    word.update(centerX, centerY, time);
+    word.draw(ctx);
+  });
+  
+  // Update particles
+  particlesList = particlesList.filter(p => p.update());
+  particlesList.forEach(p => p.draw(ctx));
+  
+  requestAnimationFrame(animate);
+}
+
+// Add floating particles occasionally
+setInterval(() => {
+  if (!canvas) return;
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  for (let i = 0; i < 3; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const radius = 150 + Math.random() * 100;
+    particlesList.push(new Particle(
+      centerX + Math.cos(angle) * radius,
+      centerY + Math.sin(angle) * radius
+    ));
+  }
+}, 500);
+
+// Resize handler
+window.addEventListener('resize', () => {
+  if (canvas) {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+});
+
+// Initialize
+generateBrainShape();
+animate();
+
+// API Functions
 async function predict() {
   const syllabus = document.getElementById('syllabus').value.trim();
   const writing = document.getElementById('writing').value.trim();
@@ -97,7 +639,7 @@ async function predict() {
   results.style.display = 'none';
 
   if (!syllabus) {
-    errorBox.textContent = 'Please paste your syllabus or class notes first.';
+    errorBox.textContent = 'Please paste your syllabus first.';
     errorBox.style.display = 'block';
     return;
   }
@@ -114,7 +656,6 @@ async function predict() {
 
     const data = await res.json();
     
-    // The server always returns 200 with a valid structure now
     if (data.questions && Array.isArray(data.questions)) {
       displayResults(data);
     } else {
@@ -122,7 +663,7 @@ async function predict() {
       errorBox.style.display = 'block';
     }
   } catch (e) {
-    errorBox.textContent = 'Network error: ' + e.message;
+    errorBox.textContent = 'Error: ' + e.message;
     errorBox.style.display = 'block';
   } finally {
     btn.disabled = false;
