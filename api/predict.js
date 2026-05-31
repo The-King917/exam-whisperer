@@ -4,8 +4,15 @@ export default async function handler(req, res) {
   const { syllabus, writing } = req.body;
   if (!syllabus) return res.status(400).json({ error: 'No syllabus provided' });
 
-  // YOUR API KEY - make sure this is correct
+  // Get API key from environment variable
   const API_KEY = process.env.ANTHROPIC_API_KEY;
+  
+  // Check if key exists
+  if (!API_KEY) {
+    console.error('ANTHROPIC_API_KEY environment variable is not set');
+    return res.status(500).json({ error: 'Server configuration error: API key missing' });
+  }
+
   const styleNote = writing ? `\n\nThe student's writing style (match this EXACTLY in vocabulary, sentence structure, and tone): "${writing}"` : '';
 
   try {
@@ -13,7 +20,7 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': API_KEY.trim(),
+        'x-api-key': API_KEY,  // Make sure this is a string, no extra spaces
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
@@ -41,7 +48,7 @@ CRITICAL INSTRUCTIONS:
 
 3. Generate 10 questions total (num 1 through 10)
 4. Confidence scores should be integers between 60-95
-5. Topics should be specific (e.g., "Signal Transduction", "Mitosis Regulation", "Photosynthesis")
+5. Topics should be specific
 6. The answer must match the student's writing style if provided
 
 Return ONLY the JSON object, nothing else.`
@@ -62,22 +69,19 @@ Return ONLY the JSON object, nothing else.`
     }
 
     let text = claude.content[0].text.trim();
-    console.log('Raw response from Claude:', text.substring(0, 200)); // Log first 200 chars for debugging
+    console.log('Raw response from Claude:', text.substring(0, 200));
 
     // Multiple cleaning strategies
     let cleaned = text;
     
-    // Remove markdown code blocks
     cleaned = cleaned.replace(/```json\s*/g, '');
     cleaned = cleaned.replace(/```\s*/g, '');
     
-    // Remove any text before the first {
     const firstBrace = cleaned.indexOf('{');
     if (firstBrace > 0) {
       cleaned = cleaned.substring(firstBrace);
     }
     
-    // Remove any text after the last }
     const lastBrace = cleaned.lastIndexOf('}');
     if (lastBrace < cleaned.length - 1) {
       cleaned = cleaned.substring(0, lastBrace + 1);
@@ -90,38 +94,30 @@ Return ONLY the JSON object, nothing else.`
     } catch (parseError) {
       console.error('First parse attempt failed:', parseError.message);
       
-      // Second attempt: try to fix common JSON issues
       let fixed = cleaned;
-      // Fix trailing commas
       fixed = fixed.replace(/,(\s*[}\]])/g, '$1');
-      // Fix missing quotes around keys
       fixed = fixed.replace(/([{,]\s*)([a-zA-Z0-9_]+)(\s*:)/g, '$1"$2"$3');
       
       try {
         parsed = JSON.parse(fixed);
       } catch (secondError) {
         console.error('Second parse attempt failed:', secondError.message);
-        console.error('Failed JSON string:', cleaned);
         return res.status(500).json({ 
-          error: 'AI returned malformed JSON. Please try again.',
-          details: parseError.message
+          error: 'AI returned malformed JSON. Please try again.'
         });
       }
     }
 
     // Validate and fix the structure
     if (!parsed.questions || !Array.isArray(parsed.questions)) {
-      // Try to reconstruct if missing
       if (parsed.questions && typeof parsed.questions === 'object') {
         parsed.questions = Object.values(parsed.questions);
       } else {
-        throw new Error('Missing questions array in response');
+        parsed.questions = [];
       }
     }
 
-    // Ensure we have exactly 10 questions
     if (parsed.questions.length < 10) {
-      console.warn(`Only got ${parsed.questions.length} questions, padding to 10`);
       while (parsed.questions.length < 10) {
         parsed.questions.push({
           num: parsed.questions.length + 1,
@@ -132,15 +128,13 @@ Return ONLY the JSON object, nothing else.`
       }
     }
 
-    // Ensure each question has all required fields
     parsed.questions = parsed.questions.slice(0, 10).map((q, idx) => ({
       num: q.num || idx + 1,
       question: q.question || q.text || "Question not available",
-      confidence: typeof q.confidence === 'number' ? q.confidence : (q.confidence ? parseInt(q.confidence) : 70),
+      confidence: typeof q.confidence === 'number' ? q.confidence : 70,
       topic: q.topic || q.subject || "Key concept"
     }));
 
-    // Ensure answer exists
     if (!parsed.answer || typeof parsed.answer !== 'string') {
       parsed.answer = "Based on your materials, here's a model answer. Consider key concepts like mechanisms, pathways, and regulatory processes discussed in your syllabus.";
     }
