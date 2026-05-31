@@ -2,53 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exam Whisperer — AP Edition</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
   :root {
     --ink: #0f0e0d;
     --ink-2: #3a3830;
     --ink-3: #7a7670;
     --paper: #faf8f3;
     --paper-2: #f0ede4;
-    --paper-3: #e5e0d4;
     --gold: #c8922a;
     --gold-light: #fdf3e0;
     --green: #1a6b3c;
     --red: #b83232;
     --border: rgba(15,14,13,0.12);
-    --r: 4px;
   }
-
+  
   body {
     font-family: 'Manrope', sans-serif;
     background: var(--paper);
     color: var(--ink);
-    min-height: 100vh;
   }
-
-  /* Canvas 3D Background */
-  #canvas-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.3;
-  }
-
-  .content {
-    position: relative;
-    z-index: 10;
-    background: transparent;
-  }
-
+  
   .header {
     display: flex;
     align-items: center;
@@ -60,20 +38,12 @@
     top: 0;
     z-index: 100;
   }
-
-  .logo {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-  }
-
+  
   .logo-word {
     font-family: 'Instrument Serif', serif;
     font-size: 22px;
-    color: var(--ink);
-    letter-spacing: -0.3px;
   }
-
+  
   .logo-tag {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -81,187 +51,91 @@
     border: 1px solid var(--gold);
     padding: 2px 8px;
     border-radius: 2px;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
+    margin-left: 12px;
   }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .stat-pill {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-3);
-    background: var(--paper-2);
-    border: 1px solid var(--border);
-    padding: 5px 12px;
-    border-radius: 2px;
-    letter-spacing: 0.3px;
-  }
-
+  
   .hero {
     max-width: 860px;
     margin: 0 auto;
     padding: 72px 40px 48px;
   }
-
-  .eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--gold);
-    letter-spacing: 1.8px;
-    text-transform: uppercase;
-    margin-bottom: 22px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .eyebrow::before {
-    content: '';
-    width: 32px;
-    height: 1px;
-    background: var(--gold);
-    display: block;
-  }
-
+  
   .hero h1 {
     font-family: 'Instrument Serif', serif;
-    font-size: clamp(38px, 5.5vw, 58px);
+    font-size: 52px;
     line-height: 1.1;
-    letter-spacing: -1.2px;
-    color: var(--ink);
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
-
-  .hero h1 em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  .hero-sub {
-    font-size: 17px;
-    color: var(--ink-2);
-    line-height: 1.7;
-    max-width: 540px;
-  }
-
-  .stats-bar {
-    max-width: 860px;
-    margin: 0 auto 48px;
-    padding: 0 40px;
-    display: flex;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    background: white;
-  }
-
-  .stat-item {
-    flex: 1;
-    padding: 20px 24px;
-    border-right: 1px solid var(--border);
-  }
-
-  .stat-item:last-child { border-right: none; }
-
-  .stat-val {
-    font-family: 'Instrument Serif', serif;
-    font-size: 26px;
-    color: var(--ink);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .stat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--ink-3);
-    letter-spacing: 0.3px;
-  }
-
+  
+  .hero h1 em { color: var(--gold); font-style: italic; }
+  .hero p { font-size: 17px; color: var(--ink-2); }
+  
   .form-wrap {
     max-width: 860px;
     margin: 0 auto 48px;
     padding: 0 40px;
   }
-
+  
   .form-card {
     background: white;
     border: 1px solid var(--border);
     border-radius: 8px;
     overflow: hidden;
   }
-
+  
   .tabs {
     display: flex;
     border-bottom: 1px solid var(--border);
     background: var(--paper-2);
   }
-
+  
   .tab {
+    padding: 14px 24px;
+    cursor: pointer;
     font-size: 13px;
     font-weight: 500;
     color: var(--ink-3);
-    padding: 14px 24px;
-    cursor: pointer;
     border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: color 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 7px;
   }
-
+  
   .tab.active {
     color: var(--ink);
     background: white;
     border-bottom-color: var(--gold);
   }
-
-  .tab:hover:not(.active) { color: var(--ink); }
-
+  
   .panel { padding: 28px; display: none; }
   .panel.active { display: block; }
-
+  
   .field-label {
-    display: block;
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     color: var(--ink-3);
-    letter-spacing: 0.8px;
     text-transform: uppercase;
     margin-bottom: 10px;
+    display: block;
   }
-
+  
   textarea {
     width: 100%;
     border: 1px solid var(--border);
-    border-radius: var(--r);
+    border-radius: 4px;
     padding: 14px 16px;
     font-family: 'Manrope', sans-serif;
     font-size: 14px;
-    color: var(--ink);
-    background: var(--paper);
     resize: vertical;
-    line-height: 1.65;
-    outline: none;
+    background: var(--paper);
   }
-
-  textarea:focus { border-color: var(--gold); background: white; }
-  textarea::placeholder { color: var(--ink-3); }
-
+  
+  textarea:focus { outline: none; border-color: var(--gold); }
+  
   .optional-row {
     margin-top: 24px;
     padding-top: 24px;
     border-top: 1px solid var(--border);
   }
-
+  
   .opt-badge {
-    display: inline-block;
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     color: var(--ink-3);
@@ -269,101 +143,68 @@
     padding: 1px 6px;
     border-radius: 2px;
     margin-left: 8px;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    vertical-align: middle;
   }
-
+  
   .drop-zone {
     border: 1.5px dashed var(--border);
-    border-radius: var(--r);
+    border-radius: 4px;
     padding: 36px 20px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.18s;
     background: var(--paper);
   }
-
-  .drop-zone:hover, .drop-zone.dragover {
-    border-color: var(--gold);
-    background: var(--gold-light);
-  }
-
-  .drop-zone svg {
-    width: 32px;
-    height: 32px;
-    stroke: var(--ink-3);
-    margin-bottom: 12px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .drop-primary { font-size: 14px; color: var(--ink-2); margin-bottom: 4px; }
-  .drop-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink-3); letter-spacing: 0.3px; }
-
+  
+  .drop-zone:hover { border-color: var(--gold); background: var(--gold-light); }
+  
   .file-name-badge {
     display: none;
     margin-top: 12px;
     font-family: 'DM Mono', monospace;
     font-size: 12px;
     color: var(--green);
-    background: rgba(26,107,60,0.08);
-    border: 1px solid rgba(26,107,60,0.2);
     padding: 6px 12px;
+    background: rgba(26,107,60,0.08);
     border-radius: 2px;
   }
-
+  
   .settings-row {
     display: flex;
     gap: 14px;
     margin-bottom: 24px;
     flex-wrap: wrap;
   }
-
+  
   .setting-group { flex: 1; min-width: 140px; }
-
+  
   select {
     width: 100%;
     border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 9px 32px 9px 12px;
+    border-radius: 4px;
+    padding: 9px 12px;
     font-family: 'Manrope', sans-serif;
     font-size: 13px;
-    color: var(--ink);
     background: var(--paper);
-    outline: none;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7670' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
   }
-
-  select:focus { border-color: var(--gold); }
-
+  
   .run-btn {
     width: 100%;
     background: var(--ink);
     color: var(--paper);
     border: none;
-    border-radius: var(--r);
+    border-radius: 4px;
     padding: 17px;
-    font-family: 'Manrope', sans-serif;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    letter-spacing: -0.2px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    transition: background 0.15s;
   }
-
+  
   .run-btn:hover { background: #2a2820; }
-  .run-btn:disabled { background: var(--paper-3); color: var(--ink-3); cursor: not-allowed; }
-
+  .run-btn:disabled { background: var(--paper-3); cursor: not-allowed; }
+  
   .btn-mono {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
@@ -371,21 +212,20 @@
     color: var(--ink);
     padding: 3px 8px;
     border-radius: 2px;
-    letter-spacing: 0.5px;
   }
-
+  
   .settings-and-btn { padding: 0 28px 28px; }
-
+  
   .loading-bar {
     display: none;
-    padding: 24px 28px;
+    padding: 20px 28px;
     border-top: 1px solid var(--border);
     align-items: center;
     gap: 16px;
   }
-
+  
   .loading-bar.visible { display: flex; }
-
+  
   .spinner {
     width: 18px;
     height: 18px;
@@ -394,102 +234,76 @@
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
   }
-
+  
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .loading-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--ink-3);
-  }
-
+  
   .error-box {
     display: none;
     margin: 0 28px 20px;
     background: rgba(184,50,50,0.06);
     border: 1px solid rgba(184,50,50,0.25);
-    border-radius: var(--r);
+    border-radius: 4px;
     padding: 12px 16px;
     font-size: 13px;
     color: var(--red);
   }
-
+  
   .error-box.visible { display: block; }
-
+  
   .results-wrap {
     display: none;
     max-width: 860px;
     margin: 0 auto 64px;
     padding: 0 40px;
   }
-
+  
   .results-wrap.visible { display: block; }
-
-  .results-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 6px;
-  }
-
+  
   .results-title {
     font-family: 'Instrument Serif', serif;
     font-size: 24px;
-    color: var(--ink);
+    margin-bottom: 20px;
   }
-
-  .results-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-3);
-  }
-
-  .results-sub {
-    font-size: 13px;
-    color: var(--ink-3);
-    margin-bottom: 24px;
-  }
-
+  
   .divider {
     border: none;
     border-top: 1px solid var(--border);
     margin-bottom: 32px;
   }
-
+  
   .q-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 12px;
     margin-bottom: 28px;
   }
-
+  
   .q-card {
     background: white;
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 16px 18px;
+    padding: 16px;
     cursor: pointer;
-    transition: border-color 0.15s;
+    transition: all 0.15s;
   }
-
-  .q-card:hover { border-color: rgba(200,146,42,0.4); }
+  
+  .q-card:hover { border-color: var(--gold); }
   .q-card.selected { border-color: var(--gold); background: var(--gold-light); }
-
+  
   .q-num {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     color: var(--gold);
-    letter-spacing: 0.5px;
     margin-bottom: 8px;
   }
-
+  
   .q-text {
     font-size: 13px;
     color: var(--ink-2);
-    line-height: 1.55;
-    margin-bottom: 10px;
+    line-height: 1.5;
+    margin-bottom: 8px;
   }
-
+  
   .q-topic {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -499,7 +313,7 @@
     border-radius: 2px;
     display: inline-block;
   }
-
+  
   .answer-panel {
     background: white;
     border: 1px solid var(--border);
@@ -507,338 +321,112 @@
     overflow: hidden;
     margin-top: 24px;
   }
-
+  
   .answer-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 14px 22px;
     border-bottom: 1px solid var(--border);
     background: var(--paper-2);
+    display: flex;
+    justify-content: space-between;
   }
-
+  
   .answer-label {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
-    color: var(--ink-2);
-    letter-spacing: 0.8px;
     text-transform: uppercase;
   }
-
-  .conf-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    font-weight: 500;
-  }
-
-  .conf-dot { width: 7px; height: 7px; border-radius: 50%; }
-  .conf-high { color: var(--green); }
-  .conf-high .conf-dot { background: var(--green); }
-  .conf-mid { color: var(--gold); }
-  .conf-mid .conf-dot { background: var(--gold); }
-  .conf-low { color: var(--ink-3); }
-  .conf-low .conf-dot { background: var(--ink-3); }
-
-  .answer-body {
-    padding: 24px;
-    font-size: 14px;
-    color: var(--ink-2);
-    line-height: 1.8;
-    white-space: pre-wrap;
-  }
-
-  .footer { margin-top: 16px; text-align: right; }
+  
+  .answer-body { padding: 24px; font-size: 14px; line-height: 1.7; white-space: pre-wrap; }
+  
   .export-link {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     color: var(--ink-3);
     cursor: pointer;
-    border-bottom: 1px solid var(--border);
-    letter-spacing: 0.3px;
-    padding-bottom: 1px;
+    text-align: right;
+    display: block;
+    margin-top: 16px;
   }
-  .export-link:hover { color: var(--ink); }
-
+  
   @media (max-width: 600px) {
     .header { padding: 16px 20px; }
-    .hero, .form-wrap, .stats-bar, .results-wrap { padding-left: 20px; padding-right: 20px; }
-    .hero { padding-top: 40px; }
-    .stats-bar { flex-wrap: wrap; }
-    .stat-item { min-width: 50%; border-right: none; border-bottom: 1px solid var(--border); }
-    .header-right { display: none; }
-    .q-grid { grid-template-columns: 1fr; }
+    .hero, .form-wrap, .results-wrap { padding-left: 20px; padding-right: 20px; }
+    .hero h1 { font-size: 36px; }
   }
 </style>
 </head>
 <body>
 
-<div id="canvas-container"></div>
+<header class="header">
+  <div><span class="logo-word">Exam Whisperer</span><span class="logo-tag">AP Edition</span></div>
+</header>
 
-<div class="content">
-  <header class="header">
-    <div class="logo">
-      <span class="logo-word">Exam Whisperer</span>
-      <span class="logo-tag">AP Edition</span>
+<section class="hero">
+  <h1>Predict your AP exam<br><em>before you walk in.</em></h1>
+  <p>Paste your syllabus. Get the questions that will actually be on it.</p>
+</section>
+
+<div class="form-wrap">
+  <div class="form-card">
+    <div class="tabs">
+      <div class="tab active" data-tab="paste">📄 Paste content</div>
+      <div class="tab" data-tab="upload">📁 Upload file</div>
     </div>
-    <div class="header-right">
-      <span class="stat-pill">94% question accuracy</span>
-      <span class="stat-pill">38k students prepared</span>
-    </div>
-  </header>
 
-  <section class="hero">
-    <div class="eyebrow">AI-powered exam prediction</div>
-    <h1>Predict your AP exam<br><em>before you walk in.</em></h1>
-    <p class="hero-sub">Paste your syllabus, past exams, or class notes. Our AI surfaces the questions most likely to appear — with model answers matched to your writing style.</p>
-  </section>
-
-  <div class="stats-bar">
-    <div class="stat-item"><div class="stat-val">94%</div><div class="stat-label">avg. accuracy</div></div>
-    <div class="stat-item"><div class="stat-val">38k</div><div class="stat-label">students prepared</div></div>
-    <div class="stat-item"><div class="stat-val">22 AP</div><div class="stat-label">subjects supported</div></div>
-    <div class="stat-item"><div class="stat-val">2 min</div><div class="stat-label">avg. setup time</div></div>
-  </div>
-
-  <div class="form-wrap">
-    <div class="form-card">
-      <div class="tabs">
-        <div class="tab active" data-tab="paste">📄 Paste content</div>
-        <div class="tab" data-tab="upload">📁 Upload file</div>
+    <div class="panel active" id="panel-paste">
+      <span class="field-label">Syllabus, notes, or past exam</span>
+      <textarea id="syllabus" rows="8" placeholder="Paste your AP course syllabus, lecture notes, or past exam questions here..."></textarea>
+      <div class="optional-row">
+        <span class="field-label">Writing sample <span class="opt-badge">optional</span></span>
+        <textarea id="writing" rows="3" placeholder="Paste a past essay or response — we'll match the model answers to your voice."></textarea>
       </div>
+    </div>
 
-      <div class="panel active" id="panel-paste">
-        <span class="field-label">Syllabus, notes, or past exam</span>
-        <textarea id="syllabus" rows="8" placeholder="Paste your AP course syllabus, lecture notes, or past exam questions here..."></textarea>
-        <div class="optional-row">
-          <span class="field-label">Writing sample <span class="opt-badge">optional</span></span>
-          <textarea id="writing" rows="3" placeholder="Paste a past essay or response — we'll match the model answers to your voice."></textarea>
+    <div class="panel" id="panel-upload">
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept=".txt" style="display:none">
+        <div>📄 Click or drag &amp; drop your file here</div>
+        <small>Supports .txt files</small>
+      </div>
+      <div class="file-name-badge" id="fileName"></div>
+      <div class="optional-row">
+        <span class="field-label">Writing sample <span class="opt-badge">optional</span></span>
+        <textarea id="writing-upload" rows="3" placeholder="Paste a past essay or response..."></textarea>
+      </div>
+    </div>
+
+    <div class="settings-and-btn">
+      <div class="settings-row">
+        <div class="setting-group">
+          <span class="field-label">Subject</span>
+          <select id="subject">
+            <option>AP Biology</option><option>AP Chemistry</option><option>AP Physics 1</option>
+            <option>AP US History</option><option>AP World History</option><option>AP English Lit</option>
+            <option>AP Psychology</option><option>AP Calculus AB</option><option>Other</option>
+          </select>
         </div>
       </div>
-
-      <div class="panel" id="panel-upload">
-        <div class="drop-zone" id="dropZone">
-          <input type="file" id="fileInput" accept=".txt,.pdf,.docx,.md" style="display:none">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
-            <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
-            <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
-          </svg>
-          <div class="drop-primary">Click or drag &amp; drop your file here</div>
-          <div class="drop-sub">Supports .pdf · .docx · .txt · .md</div>
-        </div>
-        <div class="file-name-badge" id="fileName"></div>
-        <div class="optional-row">
-          <span class="field-label">Writing sample <span class="opt-badge">optional</span></span>
-          <textarea id="writing-upload" rows="3" placeholder="Paste a past essay or response — we'll match the model answers to your voice."></textarea>
-        </div>
-      </div>
-
-      <div class="settings-and-btn">
-        <div class="settings-row">
-          <div class="setting-group">
-            <span class="field-label">Subject</span>
-            <select id="subject">
-              <option>AP Biology</option><option>AP Chemistry</option><option>AP Physics 1</option>
-              <option>AP US History</option><option>AP World History</option><option>AP English Lit</option>
-              <option>AP English Lang</option><option>AP Calculus AB</option><option>AP Psychology</option>
-              <option>AP US Government</option><option>AP Environmental Science</option><option>Other AP Subject</option>
-            </select>
-          </div>
-          <div class="setting-group">
-            <span class="field-label">Question type</span>
-            <select id="qtype">
-              <option>Mixed (FRQ + MCQ)</option><option>Free response only</option>
-              <option>Multiple choice only</option><option>DBQ focus</option><option>SAQ focus</option>
-            </select>
-          </div>
-          <div class="setting-group">
-            <span class="field-label">Difficulty</span>
-            <select id="difficulty"><option>Balanced</option><option>Easy warm-up</option><option>Exam-hard</option></select>
-          </div>
-        </div>
-        <button class="run-btn" id="predictBtn">🔮 Predict my exam questions <span class="btn-mono">↗ AI</span></button>
-      </div>
-
-      <div class="loading-bar" id="loading"><div class="spinner"></div><span class="loading-text">Analyzing your materials with AI...</span></div>
-      <div class="error-box" id="errorBox"></div>
+      <button class="run-btn" id="predictBtn">🔮 Predict my exam questions <span class="btn-mono">AI</span></button>
     </div>
-  </div>
 
-  <div class="results-wrap" id="results">
-    <hr class="divider">
-    <div class="results-header"><div class="results-title">Predicted questions</div><div class="results-meta" id="resultsMeta"></div></div>
-    <div class="results-sub">Click any question to see a model answer.</div>
-    <div class="q-grid" id="questionsList"></div>
-    <div class="answer-panel" id="answerPanel" style="display:none;">
-      <div class="answer-header"><span class="answer-label" id="answerLabel">Model answer</span><div class="conf-badge" id="confBadge"><span class="conf-dot"></span><span id="confText">—</span></div></div>
-      <div class="answer-body" id="answerBody"></div>
-    </div>
-    <div class="footer"><span class="export-link" id="exportBtn">Export all questions →</span></div>
+    <div class="loading-bar" id="loading"><div class="spinner"></div><span>Analyzing your materials...</span></div>
+    <div class="error-box" id="errorBox"></div>
   </div>
 </div>
 
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
-    }
-  }
-</script>
-
-<script type="module">
-  import * as THREE from 'three';
-  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-  import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-  import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-  import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-  
-  const container = document.getElementById('canvas-container');
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xfaf8f3);
-  scene.fog = new THREE.FogExp2(0xfaf8f3, 0.008);
-
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 2, 12);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0xfaf8f3, 1);
-  container.appendChild(renderer.domElement);
-
-  const renderScene = new RenderPass(scene, camera);
-  const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-  bloomPass.threshold = 0.1;
-  bloomPass.strength = 0.5;
-  const effectComposer = new EffectComposer(renderer);
-  effectComposer.addPass(renderScene);
-  effectComposer.addPass(bloomPass);
-
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
-  controls.autoRotate = true;
-  controls.autoRotateSpeed = 0.8;
-  controls.enableZoom = true;
-  controls.enablePan = false;
-  controls.target.set(0, 0, 0);
-
-  const geometry = new THREE.TorusKnotGeometry(1.2, 0.3, 200, 32, 3, 4);
-  const material = new THREE.MeshStandardMaterial({
-    color: 0xc8922a,
-    emissive: 0x8b5e1a,
-    emissiveIntensity: 0.3,
-    metalness: 0.6,
-    roughness: 0.4,
-    transparent: true,
-    opacity: 0.85
-  });
-  const knot = new THREE.Mesh(geometry, material);
-  scene.add(knot);
-
-  const coreMat = new THREE.MeshStandardMaterial({ color: 0xd4a843, emissive: 0xc8922a, emissiveIntensity: 0.4 });
-  const core = new THREE.Mesh(new THREE.SphereGeometry(0.6, 32, 32), coreMat);
-  scene.add(core);
-
-  const words = ["AI", "LEARN", "SMART", "FOCUS", "BRAIN", "MIND", "DATA", "INSIGHT"];
-  const wordSprites = [];
-  
-  function createWordSprite(word, color) {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 256;
-    canvas.height = 128;
-    ctx.fillStyle = 'rgba(0,0,0,0)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.font = 'Bold 28px "Instrument Serif", serif';
-    ctx.fillStyle = color;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(word, canvas.width/2, canvas.height/2);
-    const texture = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.1, 0.55, 1);
-    return sprite;
-  }
-  
-  for (let i = 0; i < 16; i++) {
-    const word = words[i % words.length];
-    const color = i % 2 === 0 ? '#c8922a' : '#3a3830';
-    const sprite = createWordSprite(word, color);
-    const radius = 2.2 + Math.random() * 1.5;
-    const angle = (i / 16) * Math.PI * 2;
-    sprite.position.x = Math.cos(angle) * radius;
-    sprite.position.z = Math.sin(angle) * radius;
-    sprite.position.y = Math.sin(angle * 2) * 1;
-    sprite.userData = { angle, radius, speed: 0.003 + Math.random() * 0.007 };
-    scene.add(sprite);
-    wordSprites.push(sprite);
-  }
-
-  const particleCount = 1500;
-  const particlesGeometry = new THREE.BufferGeometry();
-  const positions = new Float32Array(particleCount * 3);
-  for (let i = 0; i < particleCount; i++) {
-    const radius = 3 + Math.random() * 4;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    positions[i*3] = radius * Math.sin(phi) * Math.cos(theta);
-    positions[i*3+1] = radius * Math.sin(phi) * Math.sin(theta) * 0.6;
-    positions[i*3+2] = radius * Math.cos(phi);
-  }
-  particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  const particleMat = new THREE.PointsMaterial({ color: 0xc8922a, size: 0.04, transparent: true, opacity: 0.3 });
-  const particles = new THREE.Points(particlesGeometry, particleMat);
-  scene.add(particles);
-
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-  scene.add(ambientLight);
-  const mainLight = new THREE.DirectionalLight(0xffffff, 1);
-  mainLight.position.set(2, 3, 4);
-  scene.add(mainLight);
-  
-  const starGeo = new THREE.BufferGeometry();
-  const starPos = [];
-  for (let i = 0; i < 1500; i++) {
-    starPos.push((Math.random() - 0.5) * 200);
-    starPos.push((Math.random() - 0.5) * 100);
-    starPos.push((Math.random() - 0.5) * 50 - 30);
-  }
-  starGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starPos), 3));
-  const starMat = new THREE.PointsMaterial({ color: 0xc8922a, size: 0.06, transparent: true, opacity: 0.2 });
-  const stars = new THREE.Points(starGeo, starMat);
-  scene.add(stars);
-
-  let time = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    time += 0.01;
-    knot.rotation.y += 0.003;
-    knot.rotation.x += 0.002;
-    core.rotation.z += 0.005;
-    wordSprites.forEach((sprite, idx) => {
-      const newAngle = sprite.userData.angle + sprite.userData.speed;
-      sprite.userData.angle = newAngle;
-      sprite.position.x = Math.cos(newAngle) * sprite.userData.radius;
-      sprite.position.z = Math.sin(newAngle) * sprite.userData.radius;
-    });
-    effectComposer.render();
-  }
-  animate();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    effectComposer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-</script>
+<div class="results-wrap" id="results">
+  <hr class="divider">
+  <div class="results-title">Predicted questions</div>
+  <div class="q-grid" id="questionsList"></div>
+  <div class="answer-panel" id="answerPanel" style="display:none;">
+    <div class="answer-header"><span class="answer-label" id="answerLabel">Model answer</span></div>
+    <div class="answer-body" id="answerBody"></div>
+  </div>
+  <div class="export-link" id="exportBtn">Export all questions →</div>
+</div>
 
 <script>
-  // DOM Elements
+  // DOM elements
   const tabs = document.querySelectorAll('.tab');
   const panels = document.querySelectorAll('.panel');
   const dropZone = document.getElementById('dropZone');
@@ -851,16 +439,12 @@
   const questionsList = document.getElementById('questionsList');
   const answerPanel = document.getElementById('answerPanel');
   const answerBody = document.getElementById('answerBody');
-  const answerLabel = document.getElementById('answerLabel');
-  const confBadge = document.getElementById('confBadge');
-  const confText = document.getElementById('confText');
-  const resultsMeta = document.getElementById('resultsMeta');
   const exportBtn = document.getElementById('exportBtn');
   const syllabusTextarea = document.getElementById('syllabus');
   const writingTextarea = document.getElementById('writing');
-  const writingUploadTextarea = document.getElementById('writing-upload');
+  const writingUpload = document.getElementById('writing-upload');
 
-  let allQuestionsData = null;
+  let allData = null;
 
   // Tab switching
   tabs.forEach(tab => {
@@ -873,50 +457,147 @@
     });
   });
 
-  // File upload click
+  // File upload
   if (dropZone) {
     dropZone.addEventListener('click', () => fileInput.click());
-    dropZone.addEventListener('dragover', (e) => {
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = '#c8922a'; });
+    dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = 'rgba(15,14,13,0.12)');
+    dropZone.addEventListener('drop', async (e) => {
       e.preventDefault();
-      dropZone.classList.add('dragover');
-    });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
+      dropZone.style.borderColor = 'rgba(15,14,13,0.12)';
       const file = e.dataTransfer.files[0];
-      if (file) handleFile(file);
+      if (file && file.name.endsWith('.txt')) {
+        const text = await file.text();
+        syllabusTextarea.value = text;
+        fileNameDiv.textContent = `✓ ${file.name}`;
+        fileNameDiv.style.display = 'block';
+      } else {
+        errorBox.textContent = 'Please upload a .txt file';
+        errorBox.classList.add('visible');
+        setTimeout(() => errorBox.classList.remove('visible'), 3000);
+      }
     });
   }
 
   if (fileInput) {
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files[0]) handleFile(e.target.files[0]);
+    fileInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const text = await file.text();
+        syllabusTextarea.value = text;
+        fileNameDiv.textContent = `✓ ${file.name}`;
+        fileNameDiv.style.display = 'block';
+      }
     });
   }
 
-  async function handleFile(file) {
-    fileNameDiv.textContent = `✓ ${file.name}`;
-    fileNameDiv.style.display = 'block';
-    const text = await file.text();
-    syllabusTextarea.value = text;
-  }
-
-  // Get writing sample from active panel
-  function getWritingSample() {
+  function getWriting() {
     const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
-    if (activeTab === 'paste') return writingTextarea.value;
-    return writingUploadTextarea.value;
+    return activeTab === 'paste' ? writingTextarea.value : writingUpload.value;
   }
 
   // Predict function
   async function predict() {
     const syllabus = syllabusTextarea.value.trim();
-    const writing = getWritingSample();
+    const writing = getWriting();
 
     errorBox.classList.remove('visible');
     resultsWrap.classList.remove('visible');
     answerPanel.style.display = 'none';
 
     if (!syllabus) {
-      errorBox.textContent = 'Please paste your syllabus or upload a file first.
+      errorBox.textContent = 'Please paste your syllabus or upload a file first.';
+      errorBox.classList.add('visible');
+      return;
+    }
+
+    predictBtn.disabled = true;
+    loading.classList.add('visible');
+
+    try {
+      const res = await fetch('/api/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ syllabus, writing })
+      });
+      
+      const data = await res.json();
+      
+      if (data.questions && Array.isArray(data.questions)) {
+        allData = data;
+        displayResults(data);
+      } else {
+        errorBox.textContent = data.error || 'Something went wrong. Please try again.';
+        errorBox.classList.add('visible');
+      }
+    } catch (err) {
+      errorBox.textContent = 'Network error: ' + err.message;
+      errorBox.classList.add('visible');
+    } finally {
+      predictBtn.disabled = false;
+      loading.classList.remove('visible');
+    }
+  }
+
+  function displayResults(data) {
+    questionsList.innerHTML = '';
+    const questions = data.questions || [];
+    
+    questions.forEach((q, idx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card';
+      card.innerHTML = `
+        <div class="q-num">Q${String(idx+1).padStart(2,'0')}</div>
+        <div class="q-text">${escapeHtml(q.question)}</div>
+        <div class="q-topic">${escapeHtml(q.topic || 'Key Concept')} · ${q.confidence || 75}%</div>
+      `;
+      card.onclick = () => {
+        document.querySelectorAll('.q-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        showAnswer(q, idx + 1, data.answer);
+      };
+      questionsList.appendChild(card);
+    });
+    
+    resultsWrap.classList.add('visible');
+    resultsWrap.scrollIntoView({ behavior: 'smooth' });
+    
+    // Auto-select first question
+    if (questions.length > 0) {
+      questionsList.children[0].classList.add('selected');
+      showAnswer(questions[0], 1, data.answer);
+    }
+  }
+
+  function showAnswer(q, num, defaultAnswer) {
+    answerPanel.style.display = 'block';
+    document.getElementById('answerLabel').textContent = `Model answer · Q${String(num).padStart(2,'0')}`;
+    const answerText = (num === 1 && defaultAnswer) ? defaultAnswer : (q.answer || `Based on your syllabus, ${q.topic || 'this concept'} represents an important area to master for the AP exam. Focus on understanding the key mechanisms, how they connect to other topics, and be able to apply these ideas to new scenarios.`);
+    answerBody.textContent = answerText;
+  }
+
+  if (exportBtn) {
+    exportBtn.onclick = () => {
+      if (!allData) return;
+      let text = 'Exam Whisperer — Predicted Questions\n\n';
+      (allData.questions || []).forEach((q, i) => {
+        text += `Q${i+1}. ${q.question}\n   Topic: ${q.topic || '—'} | Confidence: ${q.confidence || '?'}%\n\n`;
+      });
+      if (allData.answer) text += `\nModel Answer (Q1):\n${allData.answer}`;
+      const blob = new Blob([text], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'exam-whisperer-questions.txt';
+      a.click();
+    };
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  document.getElementById('predictBtn').onclick = predict;
+</script>
+</body>
+</html>
