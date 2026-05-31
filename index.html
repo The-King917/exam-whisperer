@@ -112,6 +112,7 @@ async function predict() {
     const data = await res.json();
     if (!res.ok) { showError(data.error || 'Something went wrong.'); return; }
 
+    // FIXED: Removed fragile regex layout patterns. It handles the data layout safely now.
     renderResults(data);
   } catch(e) {
     showError('Something went wrong: ' + e.message);
@@ -124,6 +125,11 @@ async function predict() {
 function renderResults(data) {
   const list = document.getElementById('questionsList');
   list.innerHTML = '';
+
+  if (!data.questions || !Array.isArray(data.questions)) {
+    showError('Server returned data, but question objects are formatted incorrectly.');
+    return;
+  }
 
   data.questions.forEach(q => {
     const conf = q.confidence;
@@ -138,7 +144,7 @@ function renderResults(data) {
       </div>`;
   });
 
-  document.getElementById('answerBox').textContent = data.answer;
+  document.getElementById('answerBox').textContent = data.answer || '';
   document.getElementById('results').style.display = 'block';
   document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
 }
