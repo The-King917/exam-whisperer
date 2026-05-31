@@ -1,35 +1,24 @@
 export default async function handler(req, res) {
-  // 1. Only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // 2. Validate input parameters
   const { syllabus, writing } = req.body;
-  if (!syllabus) {
-    return res.status(400).json({ error: 'No syllabus provided' });
-  }
+  if (!syllabus) return res.status(400).json({ error: 'No syllabus provided' });
 
-  // 3. HARD FAIL CHECK: Verify if Vercel is actually providing your environment variable
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return res.status(500).json({ 
-      error: "Vercel Environment Error: 'ANTHROPIC_API_KEY' is missing or undefined in your Vercel project settings." 
-    });
-  }
+  // HARDCODED FALLBACK: Paste your actual "sk-ant-..." key inside the quotes below
+  const BACKUP_KEY = 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;
 
   const styleNote = writing ? `\n\nStudent writing style to match exactly: "${writing}"` : '';
 
   try {
-    // 4. Send request to Anthropic Messages API
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY.trim(), // Strips any accidental whitespace from Vercel dashboard copy-paste
+        'x-api-key': BACKUP_KEY.trim(), // Bypasses Vercel's dashboard variables completely
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20240620', // Fixed from invalid 'claude-opus-4-5'
+        model: 'claude-3-5-sonnet-20240620',
         max_tokens: 2000,
         messages: [{
           role: 'user',
@@ -39,28 +28,15 @@ export default async function handler(req, res) {
     });
 
     const claude = await response.json();
+    if (claude.error) return res.status(500).json({ error: `Anthropic API Error: ${claude.error.message}` });
 
-    // 5. Catch API-level errors (like invalid tokens) before trying to process response text
-    if (claude.error) {
-      return res.status(500).json({ error: `Anthropic API Error: ${claude.error.message}` });
-    }
-
-    if (!claude.content || !claude.content[0] || !claude.content[0].text) {
-      return res.status(500).json({ error: 'Unexpected response format received from Anthropic.' });
-    }
-
-    // 6. Clean and parse JSON data
     const text = claude.content[0].text;
     const match = text.match(/\{[\s\S]*\}/);
-    if (!match) {
-      return res.status(500).json({ error: 'Could not extract valid JSON layout from model response.' });
-    }
+    if (!match) return res.status(500).json({ error: 'Could not parse response: ' + text.substring(0, 100) });
 
     const parsed = JSON.parse(match[0]);
     return res.status(200).json(parsed);
-
   } catch(e) {
-    // Catch any network execution errors
-    return res.status(500).json({ error: `Server exception: ${e.message}` });
+    return res.status(500).json({ error: e.message });
   }
 }
