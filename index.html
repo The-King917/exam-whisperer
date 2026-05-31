@@ -57,12 +57,12 @@
 
   <div class="card">
     <div class="card-title">Paste your syllabus, past exams, or class notes</div>
-    <textarea id="syllabus" rows="7" placeholder="Paste anything — syllabus, lecture notes, past FRQs, textbook chapters. The more you give it, the better the predictions..."></textarea>
+    <textarea id="syllabus" rows="7" placeholder="Paste anything — syllabus, lecture notes, past FRQs, textbook chapters..."></textarea>
   </div>
 
   <div class="card">
     <div class="card-title">Paste a sample of your own writing (optional)</div>
-    <textarea id="writing" rows="4" placeholder="Paste 2-3 sentences from a past essay or exam answer. The AI will write answers that sound exactly like you..."></textarea>
+    <textarea id="writing" rows="4" placeholder="Paste 2-3 sentences from a past essay..."></textarea>
   </div>
 
   <button class="btn" id="predictBtn" onclick="predict()">Predict my exam questions</button>
@@ -70,7 +70,7 @@
 
   <div class="loading" id="loading">
     <div class="spinner"></div>
-    Analyzing your materials and predicting exam questions...
+    Analyzing your materials...
   </div>
 
   <div class="results" id="results">
@@ -78,8 +78,7 @@
     <div id="questionsList"></div>
 
     <div class="card" style="margin-top:24px">
-      <div class="section-label"><div class="dot"></div>AI-generated answer to question #1</div>
-      <div style="font-size:12px;color:#555;margin-bottom:8px">Written in your voice</div>
+      <div class="section-label"><div class="dot"></div>Sample answer to question #1</div>
       <div class="ans-box" id="answerBox"></div>
     </div>
   </div>
@@ -95,12 +94,16 @@ async function predict() {
   const errorBox = document.getElementById('errorBox');
 
   errorBox.style.display = 'none';
+  results.style.display = 'none';
 
-  if (!syllabus) { showError('Please paste your syllabus or class notes first.'); return; }
+  if (!syllabus) {
+    errorBox.textContent = 'Please paste your syllabus or class notes first.';
+    errorBox.style.display = 'block';
+    return;
+  }
 
   btn.disabled = true;
   loading.style.display = 'block';
-  results.style.display = 'none';
 
   try {
     const res = await fetch('/api/predict', {
@@ -110,66 +113,46 @@ async function predict() {
     });
 
     const data = await res.json();
-    if (!res.ok) { showError(data.error || 'Something went wrong.'); return; }
-
-    renderResults(data);
-  } catch(e) {
-    showError('Something went wrong: ' + e.message);
+    
+    // The server always returns 200 with a valid structure now
+    if (data.questions && Array.isArray(data.questions)) {
+      displayResults(data);
+    } else {
+      errorBox.textContent = data.error || 'Something went wrong. Please try again.';
+      errorBox.style.display = 'block';
+    }
+  } catch (e) {
+    errorBox.textContent = 'Network error: ' + e.message;
+    errorBox.style.display = 'block';
   } finally {
     btn.disabled = false;
     loading.style.display = 'none';
   }
 }
 
-function renderResults(data) {
+function displayResults(data) {
   const list = document.getElementById('questionsList');
   list.innerHTML = '';
   
-  if (!data) {
-    showError('No data received from server');
-    return;
-  }
-  
-  let questions = data.questions;
-  
-  if (questions && typeof questions === 'object' && !Array.isArray(questions)) {
-    questions = Object.values(questions);
-  }
-  
-  if (!questions || !Array.isArray(questions)) {
-    if (data.predictions) questions = data.predictions;
-    else if (data.results) questions = data.results;
-    else {
-      showError('Server response missing questions array: ' + JSON.stringify(data).substring(0, 200));
-      return;
-    }
-  }
-  
-  if (questions.length === 0) {
-    showError('No questions were generated. Please try again with more detailed materials.');
-    return;
-  }
+  const questions = data.questions || [];
   
   questions.forEach((q, idx) => {
-    const confidence = q.confidence || q.confidence_score || 70;
-    const questionText = q.question || q.text || q.content || `Question ${idx + 1}`;
-    const topic = q.topic || q.subject || q.category || "Key concept";
+    const confidence = q.confidence || 75;
     const confClass = confidence >= 80 ? 'conf-high' : confidence >= 65 ? 'conf-mid' : 'conf-low';
     
     list.innerHTML += `
       <div class="q-card">
-        <div class="q-num">${q.num || idx + 1}</div>
+        <div class="q-num">${idx + 1}</div>
         <div class="q-text">
-          ${escapeHtml(questionText)}
-          <div class="q-conf ${confClass}">${confidence}% likely · ${escapeHtml(topic)}</div>
+          ${escapeHtml(q.question)}
+          <div class="q-conf ${confClass}">${confidence}% likely · ${escapeHtml(q.topic || 'Key Concept')}</div>
         </div>
       </div>`;
   });
   
-  const answer = data.answer || data.model_answer || data.sample_answer || "No model answer was generated. Try providing more detailed syllabus content.";
-  document.getElementById('answerBox').innerHTML = escapeHtml(answer).replace(/\n/g, '<br>');
+  document.getElementById('answerBox').innerHTML = escapeHtml(data.answer || 'No answer generated.').replace(/\n/g, '<br>');
   document.getElementById('results').style.display = 'block';
-  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
 }
 
 function escapeHtml(str) {
@@ -180,12 +163,6 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-}
-
-function showError(msg) {
-  const box = document.getElementById('errorBox');
-  box.textContent = msg;
-  box.style.display = 'block';
 }
 </script>
 </body>
