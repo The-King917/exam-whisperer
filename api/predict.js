@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   // Try multiple ways to get the API key
   const API_KEY = process.env.ANTHROPIC_API_KEY || 
                   process.env.anthropic_api_key || 
-                  "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";
+                  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;
   
   if (!API_KEY) {
     console.error('No API key found in environment variables');
