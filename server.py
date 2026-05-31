@@ -4,6 +4,7 @@ import urllib.request
 import urllib.error
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
+# Grab the API key from your environment variables
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
 class Handler(BaseHTTPRequestHandler):
@@ -79,7 +80,8 @@ Respond ONLY with valid JSON in this exact format, no other text:
 }}"""
 
             anthropic_payload = json.dumps({
-                "model": "claude-opus-4-5",
+                # FIXED: Changed from 'claude-opus-4-5' to a valid, supported Anthropic model name
+                "model": "claude-3-5-sonnet-20240620",
                 "max_tokens": 2000,
                 "messages": [{"role": "user", "content": prompt}]
             }).encode()
