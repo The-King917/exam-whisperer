@@ -1,4 +1,8 @@
-export default async function handler(req, res) {
+if (!process.env.ANTHROPIC_API_KEY) {
+  return res.status(500).json({ 
+    error: "Server Error: ANTHROPIC_API_KEY is completely missing from process.env" 
+  });
+  export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { syllabus, writing } = req.body;
