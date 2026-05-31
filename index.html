@@ -40,17 +40,15 @@
     height: 100%;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.35;
+    opacity: 0.3;
   }
 
-  /* Content overlay */
   .content {
     position: relative;
     z-index: 10;
     background: transparent;
   }
 
-  /* ── HEADER ── */
   .header {
     display: flex;
     align-items: center;
@@ -104,7 +102,6 @@
     letter-spacing: 0.3px;
   }
 
-  /* ── HERO ── */
   .hero {
     max-width: 860px;
     margin: 0 auto;
@@ -152,7 +149,6 @@
     max-width: 540px;
   }
 
-  /* ── STATS BAR ── */
   .stats-bar {
     max-width: 860px;
     margin: 0 auto 48px;
@@ -187,7 +183,6 @@
     letter-spacing: 0.3px;
   }
 
-  /* ── MAIN FORM CARD ── */
   .form-wrap {
     max-width: 860px;
     margin: 0 auto 48px;
@@ -201,7 +196,6 @@
     overflow: hidden;
   }
 
-  /* ── TABS ── */
   .tabs {
     display: flex;
     border-bottom: 1px solid var(--border);
@@ -230,7 +224,6 @@
 
   .tab:hover:not(.active) { color: var(--ink); }
 
-  /* ── PANELS ── */
   .panel { padding: 28px; display: none; }
   .panel.active { display: block; }
 
@@ -255,7 +248,6 @@
     background: var(--paper);
     resize: vertical;
     line-height: 1.65;
-    transition: border-color 0.15s, background 0.15s;
     outline: none;
   }
 
@@ -282,7 +274,6 @@
     vertical-align: middle;
   }
 
-  /* ── DROP ZONE ── */
   .drop-zone {
     border: 1.5px dashed var(--border);
     border-radius: var(--r);
@@ -323,7 +314,6 @@
     border-radius: 2px;
   }
 
-  /* ── SETTINGS ── */
   .settings-row {
     display: flex;
     gap: 14px;
@@ -348,12 +338,10 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7670' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 10px center;
-    transition: border-color 0.15s;
   }
 
   select:focus { border-color: var(--gold); }
 
-  /* ── RUN BUTTON ── */
   .run-btn {
     width: 100%;
     background: var(--ink);
@@ -370,12 +358,10 @@
     align-items: center;
     justify-content: center;
     gap: 12px;
-    transition: background 0.15s, transform 0.1s;
-    margin-top: 0;
+    transition: background 0.15s;
   }
 
   .run-btn:hover { background: #2a2820; }
-  .run-btn:active { transform: scale(0.995); }
   .run-btn:disabled { background: var(--paper-3); color: var(--ink-3); cursor: not-allowed; }
 
   .btn-mono {
@@ -388,11 +374,8 @@
     letter-spacing: 0.5px;
   }
 
-  .settings-and-btn {
-    padding: 0 28px 28px;
-  }
+  .settings-and-btn { padding: 0 28px 28px; }
 
-  /* ── LOADING ── */
   .loading-bar {
     display: none;
     padding: 24px 28px;
@@ -410,7 +393,6 @@
     border-top-color: var(--gold);
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
-    flex-shrink: 0;
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -419,10 +401,8 @@
     font-family: 'DM Mono', monospace;
     font-size: 12px;
     color: var(--ink-3);
-    letter-spacing: 0.3px;
   }
 
-  /* ── ERROR ── */
   .error-box {
     display: none;
     margin: 0 28px 20px;
@@ -436,7 +416,6 @@
 
   .error-box.visible { display: block; }
 
-  /* ── RESULTS ── */
   .results-wrap {
     display: none;
     max-width: 860px;
@@ -463,7 +442,6 @@
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     color: var(--ink-3);
-    letter-spacing: 0.4px;
   }
 
   .results-sub {
@@ -478,7 +456,6 @@
     margin-bottom: 32px;
   }
 
-  /* ── QUESTION CARDS ── */
   .q-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -492,15 +469,11 @@
     border-radius: 6px;
     padding: 16px 18px;
     cursor: pointer;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: border-color 0.15s;
   }
 
   .q-card:hover { border-color: rgba(200,146,42,0.4); }
-
-  .q-card.selected {
-    border-color: var(--gold);
-    background: var(--gold-light);
-  }
+  .q-card.selected { border-color: var(--gold); background: var(--gold-light); }
 
   .q-num {
     font-family: 'DM Mono', monospace;
@@ -527,7 +500,6 @@
     display: inline-block;
   }
 
-  /* ── ANSWER PANEL ── */
   .answer-panel {
     background: white;
     border: 1px solid var(--border);
@@ -561,12 +533,7 @@
     font-weight: 500;
   }
 
-  .conf-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-  }
-
+  .conf-dot { width: 7px; height: 7px; border-radius: 50%; }
   .conf-high { color: var(--green); }
   .conf-high .conf-dot { background: var(--green); }
   .conf-mid { color: var(--gold); }
@@ -582,11 +549,7 @@
     white-space: pre-wrap;
   }
 
-  .footer {
-    margin-top: 16px;
-    text-align: right;
-  }
-
+  .footer { margin-top: 16px; text-align: right; }
   .export-link {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
@@ -595,12 +558,9 @@
     border-bottom: 1px solid var(--border);
     letter-spacing: 0.3px;
     padding-bottom: 1px;
-    transition: color 0.15s;
   }
-
   .export-link:hover { color: var(--ink); }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 600px) {
     .header { padding: 16px 20px; }
     .hero, .form-wrap, .stats-bar, .results-wrap { padding-left: 20px; padding-right: 20px; }
@@ -614,11 +574,9 @@
 </head>
 <body>
 
-<!-- 3D Canvas Container -->
 <div id="canvas-container"></div>
 
 <div class="content">
-  <!-- HEADER -->
   <header class="header">
     <div class="logo">
       <span class="logo-word">Exam Whisperer</span>
@@ -630,65 +588,39 @@
     </div>
   </header>
 
-  <!-- HERO -->
   <section class="hero">
     <div class="eyebrow">AI-powered exam prediction</div>
     <h1>Predict your AP exam<br><em>before you walk in.</em></h1>
     <p class="hero-sub">Paste your syllabus, past exams, or class notes. Our AI surfaces the questions most likely to appear — with model answers matched to your writing style.</p>
   </section>
 
-  <!-- STATS -->
   <div class="stats-bar">
-    <div class="stat-item">
-      <div class="stat-val">94%</div>
-      <div class="stat-label">avg. accuracy</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">38k</div>
-      <div class="stat-label">students prepared</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">22 AP</div>
-      <div class="stat-label">subjects supported</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">2 min</div>
-      <div class="stat-label">avg. setup time</div>
-    </div>
+    <div class="stat-item"><div class="stat-val">94%</div><div class="stat-label">avg. accuracy</div></div>
+    <div class="stat-item"><div class="stat-val">38k</div><div class="stat-label">students prepared</div></div>
+    <div class="stat-item"><div class="stat-val">22 AP</div><div class="stat-label">subjects supported</div></div>
+    <div class="stat-item"><div class="stat-val">2 min</div><div class="stat-label">avg. setup time</div></div>
   </div>
 
-  <!-- FORM CARD -->
   <div class="form-wrap">
     <div class="form-card">
-
-      <!-- TABS -->
       <div class="tabs">
-        <div class="tab active" data-tab="paste">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          Paste content
-        </div>
-        <div class="tab" data-tab="upload">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
-          Upload file
-        </div>
+        <div class="tab active" data-tab="paste">📄 Paste content</div>
+        <div class="tab" data-tab="upload">📁 Upload file</div>
       </div>
 
-      <!-- PASTE PANEL -->
       <div class="panel active" id="panel-paste">
         <span class="field-label">Syllabus, notes, or past exam</span>
         <textarea id="syllabus" rows="8" placeholder="Paste your AP course syllabus, lecture notes, or past exam questions here..."></textarea>
-
         <div class="optional-row">
           <span class="field-label">Writing sample <span class="opt-badge">optional</span></span>
           <textarea id="writing" rows="3" placeholder="Paste a past essay or response — we'll match the model answers to your voice."></textarea>
         </div>
       </div>
 
-      <!-- UPLOAD PANEL -->
       <div class="panel" id="panel-upload">
-        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-          <input type="file" id="fileInput" accept=".txt,.pdf,.docx,.md" style="display:none" onchange="handleFileUpload(event)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="fileInput" accept=".txt,.pdf,.docx,.md" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
             <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
             <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
           </svg>
@@ -696,100 +628,53 @@
           <div class="drop-sub">Supports .pdf · .docx · .txt · .md</div>
         </div>
         <div class="file-name-badge" id="fileName"></div>
-
         <div class="optional-row">
           <span class="field-label">Writing sample <span class="opt-badge">optional</span></span>
           <textarea id="writing-upload" rows="3" placeholder="Paste a past essay or response — we'll match the model answers to your voice."></textarea>
         </div>
       </div>
 
-      <!-- SETTINGS + BUTTON -->
       <div class="settings-and-btn">
         <div class="settings-row">
           <div class="setting-group">
             <span class="field-label">Subject</span>
             <select id="subject">
-              <option>AP US History</option>
-              <option>AP Biology</option>
-              <option>AP English Lit</option>
-              <option>AP English Lang</option>
-              <option>AP Calculus AB</option>
-              <option>AP Calculus BC</option>
-              <option>AP Psychology</option>
-              <option>AP Chemistry</option>
-              <option>AP Physics 1</option>
-              <option>AP US Government</option>
-              <option>AP World History</option>
-              <option>AP Environmental Science</option>
-              <option>AP Computer Science A</option>
-              <option>AP Spanish Language</option>
-              <option>Other AP Subject</option>
+              <option>AP Biology</option><option>AP Chemistry</option><option>AP Physics 1</option>
+              <option>AP US History</option><option>AP World History</option><option>AP English Lit</option>
+              <option>AP English Lang</option><option>AP Calculus AB</option><option>AP Psychology</option>
+              <option>AP US Government</option><option>AP Environmental Science</option><option>Other AP Subject</option>
             </select>
           </div>
           <div class="setting-group">
             <span class="field-label">Question type</span>
             <select id="qtype">
-              <option>Mixed (FRQ + MCQ)</option>
-              <option>Free response only</option>
-              <option>Multiple choice only</option>
-              <option>DBQ focus</option>
-              <option>SAQ focus</option>
+              <option>Mixed (FRQ + MCQ)</option><option>Free response only</option>
+              <option>Multiple choice only</option><option>DBQ focus</option><option>SAQ focus</option>
             </select>
           </div>
           <div class="setting-group">
             <span class="field-label">Difficulty</span>
-            <select id="difficulty">
-              <option>Balanced</option>
-              <option>Easy warm-up</option>
-              <option>Exam-hard</option>
-            </select>
+            <select id="difficulty"><option>Balanced</option><option>Easy warm-up</option><option>Exam-hard</option></select>
           </div>
         </div>
-
-        <button class="run-btn" id="predictBtn" onclick="predict()">
-          Predict my exam questions
-          <span class="btn-mono">↗ AI</span>
-        </button>
+        <button class="run-btn" id="predictBtn">🔮 Predict my exam questions <span class="btn-mono">↗ AI</span></button>
       </div>
 
-      <!-- LOADING -->
-      <div class="loading-bar" id="loading">
-        <div class="spinner"></div>
-        <span class="loading-text">Analyzing your materials with AI...</span>
-      </div>
-
-      <!-- ERROR -->
+      <div class="loading-bar" id="loading"><div class="spinner"></div><span class="loading-text">Analyzing your materials with AI...</span></div>
       <div class="error-box" id="errorBox"></div>
-
     </div>
   </div>
 
-  <!-- RESULTS -->
   <div class="results-wrap" id="results">
     <hr class="divider">
-
-    <div class="results-header">
-      <div class="results-title">Predicted questions</div>
-      <div class="results-meta" id="resultsMeta"></div>
-    </div>
+    <div class="results-header"><div class="results-title">Predicted questions</div><div class="results-meta" id="resultsMeta"></div></div>
     <div class="results-sub">Click any question to see a model answer.</div>
-
     <div class="q-grid" id="questionsList"></div>
-
     <div class="answer-panel" id="answerPanel" style="display:none;">
-      <div class="answer-header">
-        <span class="answer-label" id="answerLabel">Model answer</span>
-        <div class="conf-badge conf-high" id="confBadge">
-          <span class="conf-dot"></span>
-          <span id="confText">—</span>
-        </div>
-      </div>
+      <div class="answer-header"><span class="answer-label" id="answerLabel">Model answer</span><div class="conf-badge" id="confBadge"><span class="conf-dot"></span><span id="confText">—</span></div></div>
       <div class="answer-body" id="answerBody"></div>
     </div>
-
-    <div class="footer">
-      <span class="export-link" onclick="exportResults()">Export all questions →</span>
-    </div>
+    <div class="footer"><span class="export-link" id="exportBtn">Export all questions →</span></div>
   </div>
 </div>
 
@@ -826,7 +711,7 @@
   const renderScene = new RenderPass(scene, camera);
   const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
   bloomPass.threshold = 0.1;
-  bloomPass.strength = 0.6;
+  bloomPass.strength = 0.5;
   const effectComposer = new EffectComposer(renderer);
   effectComposer.addPass(renderScene);
   effectComposer.addPass(bloomPass);
@@ -838,8 +723,6 @@
   controls.autoRotateSpeed = 0.8;
   controls.enableZoom = true;
   controls.enablePan = false;
-  controls.zoomSpeed = 0.8;
-  controls.rotateSpeed = 0.8;
   controls.target.set(0, 0, 0);
 
   const geometry = new THREE.TorusKnotGeometry(1.2, 0.3, 200, 32, 3, 4);
@@ -859,7 +742,7 @@
   const core = new THREE.Mesh(new THREE.SphereGeometry(0.6, 32, 32), coreMat);
   scene.add(core);
 
-  const words = ["AI", "LEARN", "SMART", "FOCUS", "BRAIN", "MIND", "DATA", "INSIGHT", "WISDOM", "FUTURE"];
+  const words = ["AI", "LEARN", "SMART", "FOCUS", "BRAIN", "MIND", "DATA", "INSIGHT"];
   const wordSprites = [];
   
   function createWordSprite(word, color) {
@@ -881,21 +764,21 @@
     return sprite;
   }
   
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 16; i++) {
     const word = words[i % words.length];
     const color = i % 2 === 0 ? '#c8922a' : '#3a3830';
     const sprite = createWordSprite(word, color);
     const radius = 2.2 + Math.random() * 1.5;
-    const angle = (i / 20) * Math.PI * 2;
+    const angle = (i / 16) * Math.PI * 2;
     sprite.position.x = Math.cos(angle) * radius;
     sprite.position.z = Math.sin(angle) * radius;
     sprite.position.y = Math.sin(angle * 2) * 1;
-    sprite.userData = { angle, radius, speed: 0.003 + Math.random() * 0.007, heightOffset: sprite.position.y };
+    sprite.userData = { angle, radius, speed: 0.003 + Math.random() * 0.007 };
     scene.add(sprite);
     wordSprites.push(sprite);
   }
 
-  const particleCount = 1800;
+  const particleCount = 1500;
   const particlesGeometry = new THREE.BufferGeometry();
   const positions = new Float32Array(particleCount * 3);
   for (let i = 0; i < particleCount; i++) {
@@ -907,7 +790,7 @@
     positions[i*3+2] = radius * Math.cos(phi);
   }
   particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  const particleMat = new THREE.PointsMaterial({ color: 0xc8922a, size: 0.04, transparent: true, opacity: 0.35 });
+  const particleMat = new THREE.PointsMaterial({ color: 0xc8922a, size: 0.04, transparent: true, opacity: 0.3 });
   const particles = new THREE.Points(particlesGeometry, particleMat);
   scene.add(particles);
 
@@ -916,19 +799,16 @@
   const mainLight = new THREE.DirectionalLight(0xffffff, 1);
   mainLight.position.set(2, 3, 4);
   scene.add(mainLight);
-  const backLight = new THREE.PointLight(0xc8922a, 0.4);
-  backLight.position.set(-2, 1, -3);
-  scene.add(backLight);
   
   const starGeo = new THREE.BufferGeometry();
   const starPos = [];
-  for (let i = 0; i < 2000; i++) {
+  for (let i = 0; i < 1500; i++) {
     starPos.push((Math.random() - 0.5) * 200);
     starPos.push((Math.random() - 0.5) * 100);
     starPos.push((Math.random() - 0.5) * 50 - 30);
   }
   starGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starPos), 3));
-  const starMat = new THREE.PointsMaterial({ color: 0xc8922a, size: 0.06, transparent: true, opacity: 0.25 });
+  const starMat = new THREE.PointsMaterial({ color: 0xc8922a, size: 0.06, transparent: true, opacity: 0.2 });
   const stars = new THREE.Points(starGeo, starMat);
   scene.add(stars);
 
@@ -938,4 +818,105 @@
     time += 0.01;
     knot.rotation.y += 0.003;
     knot.rotation.x += 0.002;
-    core
+    core.rotation.z += 0.005;
+    wordSprites.forEach((sprite, idx) => {
+      const newAngle = sprite.userData.angle + sprite.userData.speed;
+      sprite.userData.angle = newAngle;
+      sprite.position.x = Math.cos(newAngle) * sprite.userData.radius;
+      sprite.position.z = Math.sin(newAngle) * sprite.userData.radius;
+    });
+    effectComposer.render();
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    effectComposer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+
+<script>
+  // DOM Elements
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+  const fileNameDiv = document.getElementById('fileName');
+  const predictBtn = document.getElementById('predictBtn');
+  const loading = document.getElementById('loading');
+  const errorBox = document.getElementById('errorBox');
+  const resultsWrap = document.getElementById('results');
+  const questionsList = document.getElementById('questionsList');
+  const answerPanel = document.getElementById('answerPanel');
+  const answerBody = document.getElementById('answerBody');
+  const answerLabel = document.getElementById('answerLabel');
+  const confBadge = document.getElementById('confBadge');
+  const confText = document.getElementById('confText');
+  const resultsMeta = document.getElementById('resultsMeta');
+  const exportBtn = document.getElementById('exportBtn');
+  const syllabusTextarea = document.getElementById('syllabus');
+  const writingTextarea = document.getElementById('writing');
+  const writingUploadTextarea = document.getElementById('writing-upload');
+
+  let allQuestionsData = null;
+
+  // Tab switching
+  tabs.forEach(tab => {
+    tab.addEventListener('click', function() {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      const tabName = this.getAttribute('data-tab');
+      document.getElementById(`panel-${tabName}`).classList.add('active');
+    });
+  });
+
+  // File upload click
+  if (dropZone) {
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file) handleFile(file);
+    });
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files[0]) handleFile(e.target.files[0]);
+    });
+  }
+
+  async function handleFile(file) {
+    fileNameDiv.textContent = `✓ ${file.name}`;
+    fileNameDiv.style.display = 'block';
+    const text = await file.text();
+    syllabusTextarea.value = text;
+  }
+
+  // Get writing sample from active panel
+  function getWritingSample() {
+    const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
+    if (activeTab === 'paste') return writingTextarea.value;
+    return writingUploadTextarea.value;
+  }
+
+  // Predict function
+  async function predict() {
+    const syllabus = syllabusTextarea.value.trim();
+    const writing = getWritingSample();
+
+    errorBox.classList.remove('visible');
+    resultsWrap.classList.remove('visible');
+    answerPanel.style.display = 'none';
+
+    if (!syllabus) {
+      errorBox.textContent = 'Please paste your syllabus or upload a file first.
