@@ -1,4 +1,8 @@
 {
+  "version": 2,
+  "routes": [
+    { "src": "/api/predict", "dest": "/api/predict.js" }
+  ],
   "functions": {
     "api/predict.js": {
       "memory": 512,
