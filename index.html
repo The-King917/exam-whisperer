@@ -447,15 +447,14 @@
         <textarea id="syllabus" rows="8" placeholder="Paste your AP course syllabus here..."></textarea>
       </div>
 
-      <!-- File Upload Section - FIXED: Only accepts .txt files -->
       <div class="card">
-        <div class="card-title">📁 Or upload a .txt file</div>
+        <div class="card-title">📁 Or upload a file (TXT, PDF, DOCX, MD)</div>
         <div class="file-upload-area" id="fileUploadArea">
-          <input type="file" id="fileInput" accept=".txt" style="display: none" onchange="handleFileUpload(event)">
+          <input type="file" id="fileInput" accept=".txt,.pdf,.docx,.md" style="display: none" onchange="handleFileUpload(event)">
           <div class="file-upload-content" onclick="document.getElementById('fileInput').click()">
             <div class="upload-icon">📄</div>
             <p>Click or drag & drop to upload</p>
-            <p class="file-hint">Only .txt files are supported</p>
+            <p class="file-hint">Supports .txt, .pdf, .docx, .md files</p>
           </div>
         </div>
         <div id="fileName" class="file-name" style="display: none"></div>
@@ -706,68 +705,55 @@
 </script>
 
 <script>
-  // Tab switching
+  // FIXED: switchTab function with btn parameter (not event.target)
   function switchTab(tabName, btn) {
+    // Hide all tab contents
     var tabs = document.querySelectorAll('.tab-content');
     for (var i = 0; i < tabs.length; i++) {
       tabs[i].classList.remove('active');
     }
+    
+    // Remove active class from all buttons
     var buttons = document.querySelectorAll('.tab-btn');
     for (var i = 0; i < buttons.length; i++) {
       buttons[i].classList.remove('active');
     }
+    
+    // Show selected tab
     var selectedTab = document.getElementById(tabName + '-tab');
     if (selectedTab) {
       selectedTab.classList.add('active');
     }
+    
+    // Add active class to clicked button
     if (btn) {
       btn.classList.add('active');
     }
   }
 
-  // File upload handling - FIXED: Only works with .txt files
+  // File upload handling
   async function handleFileUpload(event) {
     var file = event.target.files[0];
     if (!file) return;
-    
-    // Check if file is .txt
-    if (!file.name.endsWith('.txt')) {
-      var errorBox = document.getElementById('errorBox');
-      errorBox.textContent = 'Only .txt files are supported. Please upload a text file.';
-      errorBox.style.display = 'block';
-      setTimeout(function() {
-        errorBox.style.display = 'none';
-      }, 3000);
-      return;
-    }
     
     var fileNameDiv = document.getElementById('fileName');
     fileNameDiv.textContent = '📎 ' + file.name;
     fileNameDiv.style.display = 'block';
     
-    try {
-      var text = await readFileContent(file);
-      var syllabusTextarea = document.getElementById('syllabus');
-      var existingContent = syllabusTextarea.value;
-      
-      if (existingContent) {
-        syllabusTextarea.value = existingContent + '\n\n--- Uploaded File ---\n' + text;
-      } else {
-        syllabusTextarea.value = text;
-      }
-      
-      syllabusTextarea.style.borderColor = '#34d399';
-      setTimeout(function() {
-        syllabusTextarea.style.borderColor = '';
-      }, 2000);
-    } catch (err) {
-      var errorBox = document.getElementById('errorBox');
-      errorBox.textContent = 'Error reading file: ' + err.message;
-      errorBox.style.display = 'block';
-      setTimeout(function() {
-        errorBox.style.display = 'none';
-      }, 3000);
+    var text = await readFileContent(file);
+    var syllabusTextarea = document.getElementById('syllabus');
+    var existingContent = syllabusTextarea.value;
+    
+    if (existingContent) {
+      syllabusTextarea.value = existingContent + '\n\n--- Uploaded File ---\n' + text;
+    } else {
+      syllabusTextarea.value = text;
     }
+    
+    syllabusTextarea.style.borderColor = '#34d399';
+    setTimeout(function() {
+      syllabusTextarea.style.borderColor = '';
+    }, 2000);
   }
 
   function readFileContent(file) {
@@ -775,7 +761,7 @@
       var reader = new FileReader();
       reader.onload = function(e) { resolve(e.target.result); };
       reader.onerror = function(e) { reject(e.target.error); };
-      reader.readAsText(file, 'UTF-8');
+      reader.readAsText(file);
     });
   }
 
@@ -803,16 +789,6 @@
       uploadArea.style.background = 'rgba(15, 15, 19, 0.6)';
       var file = e.dataTransfer.files[0];
       if (file) {
-        // Check if file is .txt
-        if (!file.name.endsWith('.txt')) {
-          var errorBox = document.getElementById('errorBox');
-          errorBox.textContent = 'Only .txt files are supported. Please upload a text file.';
-          errorBox.style.display = 'block';
-          setTimeout(function() {
-            errorBox.style.display = 'none';
-          }, 3000);
-          return;
-        }
         handleFileUpload({ target: { files: [file] } });
       }
     });
@@ -882,4 +858,8 @@
 
   function escapeHtml(str) {
     if (!str) return '';
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g,
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+</script>
+</body>
+</html>
