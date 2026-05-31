@@ -1,8 +1,4 @@
-if (!process.env.ANTHROPIC_API_KEY) {
-  return res.status(500).json({ 
-    error: "Server Error: ANTHROPIC_API_KEY is completely missing from process.env" 
-  });
-  export default async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { syllabus, writing } = req.body;
@@ -15,12 +11,12 @@ if (!process.env.ANTHROPIC_API_KEY) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        
         'x-api-key': process.env.ANTHROPIC_API_KEY,
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-opus-4-5',
+        // FIX: Changed model to a valid Anthropic model identifier
+        model: 'claude-3-5-sonnet-20240620', 
         max_tokens: 2000,
         messages: [{
           role: 'user',
@@ -35,7 +31,15 @@ Respond ONLY with valid JSON, no markdown, no backticks, no extra text:
     });
 
     const claude = await response.json();
-    if (claude.error) return res.status(500).json({ error: claude.error.message });
+    
+    // FIX: Catch API level errors safely before parsing text strings
+    if (claude.error) {
+      return res.status(500).json({ error: `Anthropic Error: ${claude.error.message}` });
+    }
+
+    if (!claude.content || !claude.content[0] || !claude.content[0].text) {
+      return res.status(500).json({ error: 'Unexpected response structure from Anthropic API' });
+    }
 
     const text = claude.content[0].text;
     const match = text.match(/\{[\s\S]*\}/);
