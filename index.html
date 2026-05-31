@@ -15,7 +15,6 @@
     overflow-x: hidden;
   }
   
-  /* Canvas 3D Background */
   #canvas-container {
     position: fixed;
     top: 0;
@@ -25,7 +24,6 @@
     z-index: 0;
   }
   
-  /* Content Overlay */
   .content {
     position: relative;
     z-index: 10;
@@ -37,7 +35,6 @@
     pointer-events: auto;
   }
   
-  /* Navigation Tabs */
   .nav-tabs {
     display: flex;
     justify-content: center;
@@ -211,7 +208,6 @@
     color: #4a5568;
   }
   
-  /* File Upload Styles */
   .file-upload-area {
     border: 2px dashed rgba(66, 153, 225, 0.5);
     border-radius: 16px;
@@ -405,19 +401,17 @@
   }
   
   /* Team Member Styles */
-  .team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    margin-top: 20px;
+  .team-single {
+    max-width: 500px;
+    margin: 0 auto;
   }
   
   .team-member {
     background: rgba(22, 22, 31, 0.85);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(66, 153, 225, 0.3);
-    border-radius: 20px;
-    padding: 32px;
+    border-radius: 30px;
+    padding: 48px;
     text-align: center;
     transition: all 0.3s ease;
   }
@@ -429,39 +423,41 @@
   }
   
   .member-avatar {
-    width: 120px;
-    height: 120px;
+    width: 180px;
+    height: 180px;
     background: linear-gradient(135deg, #4299e1, #7c6af7);
     border-radius: 50%;
-    margin: 0 auto 20px;
+    margin: 0 auto 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
+    font-size: 72px;
     font-weight: bold;
     color: white;
-    box-shadow: 0 0 30px rgba(66, 153, 225, 0.4);
+    box-shadow: 0 0 40px rgba(66, 153, 225, 0.5);
   }
   
   .member-name {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 8px;
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 12px;
     color: #fff;
   }
   
   .member-title {
-    font-size: 14px;
+    font-size: 18px;
     color: #4299e1;
     font-weight: 600;
-    margin-bottom: 16px;
-    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+    letter-spacing: 0.08em;
   }
   
   .member-bio {
-    font-size: 14px;
+    font-size: 16px;
     color: #a0aec0;
-    line-height: 1.5;
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0 auto;
   }
   
   .story-text {
@@ -513,7 +509,6 @@
         <textarea id="syllabus" rows="8" placeholder="Paste your AP course syllabus here..."></textarea>
       </div>
 
-      <!-- File Upload Section -->
       <div class="card">
         <div class="card-title">📁 Or upload a file (TXT, PDF, DOCX, MD)</div>
         <div class="file-upload-area" id="fileUploadArea">
@@ -579,54 +574,19 @@
       </div>
     </div>
 
-    <!-- Tab 3: Meet the Team -->
+    <!-- Tab 3: Meet the Team - Only Aryaman Subramanian -->
     <div id="team-tab" class="tab-content">
       <div class="hero">
-        <h1>👥 Meet the <span>Team</span></h1>
-        <p>The brilliant minds behind Exam Whisperer</p>
+        <h1>👥 Meet the <span>Founder</span></h1>
+        <p>The vision behind Exam Whisperer</p>
       </div>
       
-      <div class="team-grid">
+      <div class="team-single">
         <div class="team-member">
           <div class="member-avatar">AS</div>
           <div class="member-name">Aryaman Subramanian</div>
           <div class="member-title">President & Founder</div>
-          <div class="member-bio">Aryaman founded Exam Whisperer after his own late-night study revelation. A passionate advocate for AI in education, he leads the company's vision and strategy. When he's not coding, you can find him reading about cognitive science or playing chess.</div>
-        </div>
-        
-        <div class="team-member">
-          <div class="member-avatar">MJ</div>
-          <div class="member-name">Maya Johnson</div>
-          <div class="member-title">Head of AI Research</div>
-          <div class="member-bio">Maya holds a PhD in Machine Learning from Stanford and has published over 20 papers on educational AI. She's responsible for making our prediction algorithms smarter every day.</div>
-        </div>
-        
-        <div class="team-member">
-          <div class="member-avatar">DT</div>
-          <div class="member-name">David Torres</div>
-          <div class="member-title">Lead Product Designer</div>
-          <div class="member-bio">David turned Exam Whisperer from a clunky prototype into the beautiful 3D experience you see today. He believes great design can make learning feel like play.</div>
-        </div>
-        
-        <div class="team-member">
-          <div class="member-avatar">SW</div>
-          <div class="member-name">Sarah Williams</div>
-          <div class="member-title">AP Curriculum Expert</div>
-          <div class="member-bio">A former AP teacher with 15 years of experience, Sarah ensures our predictions align with actual College Board standards and exam patterns.</div>
-        </div>
-        
-        <div class="team-member">
-          <div class="member-avatar">MC</div>
-          <div class="member-name">Michael Chen</div>
-          <div class="member-title">Lead Backend Engineer</div>
-          <div class="member-bio">Michael keeps the servers running and the predictions fast. He previously worked at Google and is obsessed with optimizing API calls.</div>
-        </div>
-        
-        <div class="team-member">
-          <div class="member-avatar">EJ</div>
-          <div class="member-name">Emma Johnson</div>
-          <div class="member-title">Community Manager</div>
-          <div class="member-bio">Emma connects with our users daily, gathering feedback and making sure every student's voice is heard. She's the heart of the Exam Whisperer community.</div>
+          <div class="member-bio">Aryaman founded Exam Whisperer after his own late-night study revelation. A passionate advocate for AI in education, he leads the company's vision and strategy. When he's not coding, you can find him reading about cognitive science or playing chess. His mission is to make studying smarter, not harder, for millions of students worldwide.</div>
         </div>
       </div>
     </div>
@@ -873,4 +833,72 @@
   // Drag and drop
   const uploadArea = document.getElementById('fileUploadArea');
   
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, preventDefaults, false);
+  });
+
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, highlight, false);
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, unhighlight, false);
+  });
+
+  function highlight() {
+    uploadArea.style.borderColor = '#4299e1';
+    uploadArea.style.background = 'rgba(66, 153, 225, 0.15)';
+  }
+
+  function unhighlight() {
+    uploadArea.style.borderColor = 'rgba(66, 153, 225, 0.5)';
+    uploadArea.style.background = 'rgba(15, 15, 19, 0.6)';
+  }
+
+  uploadArea.addEventListener('drop', handleDrop, false);
+
+  function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const file = dt.files[0];
+    if (file) {
+      handleFileUpload({ target: { files: [file] } });
+    }
+  }
+
+  // Prediction functions
+  async function predict() {
+    const syllabus = document.getElementById('syllabus').value.trim();
+    const writing = document.getElementById('writing').value.trim();
+    const btn = document.getElementById('predictBtn');
+    const loading = document.getElementById('loading');
+    const results = document.getElementById('results');
+    const errorBox = document.getElementById('errorBox');
+
+    errorBox.style.display = 'none';
+    results.style.display = 'none';
+
+    if (!syllabus) {
+      errorBox.textContent = 'Please paste your syllabus first.';
+      errorBox.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    loading.style.display = 'block';
+
+    try {
+      const res = await fetch('/api/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ syllabus, writing })
+      });
+      const data = await res.json();
+      if (data.questions && Array.isArray(data.questions)) {
+        displayResults(data);
+      } else {
+        errorBox.textContent = data.error || 'Something went wrong.
