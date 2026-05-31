@@ -400,7 +400,6 @@
     50% { transform: translateY(10px); }
   }
   
-  /* Team Member Styles */
   .team-single {
     max-width: 500px;
     margin: 0 auto;
@@ -492,9 +491,9 @@
   <div class="main">
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchTab('predictor')">🔮 Predictor</button>
-      <button class="tab-btn" onclick="switchTab('story')">📖 Our Story</button>
-      <button class="tab-btn" onclick="switchTab('team')">👥 Meet the Team</button>
+      <button class="tab-btn active" onclick="switchTab('predictor', event)">🔮 Predictor</button>
+      <button class="tab-btn" onclick="switchTab('story', event)">📖 Our Story</button>
+      <button class="tab-btn" onclick="switchTab('team', event)">👥 Meet the Team</button>
     </div>
 
     <!-- Tab 1: Predictor -->
@@ -784,16 +783,22 @@
 </script>
 
 <script>
-  // Tab switching
-  function switchTab(tabName) {
+  // Tab switching - FIXED with event parameter
+  function switchTab(tabName, event) {
+    // Hide all tabs
     document.querySelectorAll('.tab-content').forEach(tab => {
       tab.classList.remove('active');
     });
+    // Remove active class from all buttons
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.classList.remove('active');
     });
+    // Show selected tab
     document.getElementById(`${tabName}-tab`).classList.add('active');
-    event.target.classList.add('active');
+    // Add active class to clicked button
+    if (event && event.target) {
+      event.target.classList.add('active');
+    }
   }
 
   // File upload handling
@@ -832,41 +837,42 @@
 
   // Drag and drop
   const uploadArea = document.getElementById('fileUploadArea');
-  
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    uploadArea.addEventListener(eventName, preventDefaults, false);
-  });
+  if (uploadArea) {
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, preventDefaults, false);
+    });
 
-  function preventDefaults(e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
 
-  ['dragenter', 'dragover'].forEach(eventName => {
-    uploadArea.addEventListener(eventName, highlight, false);
-  });
+    ['dragenter', 'dragover'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, highlight, false);
+    });
 
-  ['dragleave', 'drop'].forEach(eventName => {
-    uploadArea.addEventListener(eventName, unhighlight, false);
-  });
+    ['dragleave', 'drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, unhighlight, false);
+    });
 
-  function highlight() {
-    uploadArea.style.borderColor = '#4299e1';
-    uploadArea.style.background = 'rgba(66, 153, 225, 0.15)';
-  }
+    function highlight() {
+      uploadArea.style.borderColor = '#4299e1';
+      uploadArea.style.background = 'rgba(66, 153, 225, 0.15)';
+    }
 
-  function unhighlight() {
-    uploadArea.style.borderColor = 'rgba(66, 153, 225, 0.5)';
-    uploadArea.style.background = 'rgba(15, 15, 19, 0.6)';
-  }
+    function unhighlight() {
+      uploadArea.style.borderColor = 'rgba(66, 153, 225, 0.5)';
+      uploadArea.style.background = 'rgba(15, 15, 19, 0.6)';
+    }
 
-  uploadArea.addEventListener('drop', handleDrop, false);
+    uploadArea.addEventListener('drop', handleDrop, false);
 
-  function handleDrop(e) {
-    const dt = e.dataTransfer;
-    const file = dt.files[0];
-    if (file) {
-      handleFileUpload({ target: { files: [file] } });
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const file = dt.files[0];
+      if (file) {
+        handleFileUpload({ target: { files: [file] } });
+      }
     }
   }
 
@@ -894,11 +900,4 @@
     try {
       const res = await fetch('/api/predict', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ syllabus, writing })
-      });
-      const data = await res.json();
-      if (data.questions && Array.isArray(data.questions)) {
-        displayResults(data);
-      } else {
-        errorBox.textContent = data.error || 'Something went wrong.
+        headers: { 'Content-Type': 'application/json
