@@ -15,6 +15,7 @@
     overflow-x: hidden;
   }
   
+  /* Canvas 3D Background */
   #canvas-container {
     position: fixed;
     top: 0;
@@ -24,6 +25,7 @@
     z-index: 0;
   }
   
+  /* Content Overlay - Expanded */
   .content {
     position: relative;
     z-index: 10;
@@ -31,10 +33,12 @@
     pointer-events: none;
   }
   
-  .header, .main, .card, .btn, textarea, .results, .error, .loading, .nav-tabs, .tab-content, .file-upload-area {
+  /* All interactive elements */
+  .header, .main, .card, .btn, textarea, .results, .error, .loading, .nav-tabs, .tab-content {
     pointer-events: auto;
   }
   
+  /* Navigation Tabs */
   .nav-tabs {
     display: flex;
     justify-content: center;
@@ -208,43 +212,6 @@
     color: #4a5568;
   }
   
-  .file-upload-area {
-    border: 2px dashed rgba(66, 153, 225, 0.5);
-    border-radius: 16px;
-    padding: 40px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: rgba(15, 15, 19, 0.6);
-  }
-  
-  .file-upload-area:hover {
-    border-color: #4299e1;
-    background: rgba(66, 153, 225, 0.1);
-    transform: translateY(-2px);
-  }
-  
-  .upload-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
-  }
-  
-  .file-hint {
-    font-size: 12px;
-    color: #4a5568;
-    margin-top: 8px;
-  }
-  
-  .file-name {
-    margin-top: 12px;
-    padding: 8px 12px;
-    background: rgba(66, 153, 225, 0.15);
-    border-radius: 8px;
-    font-size: 13px;
-    color: #4299e1;
-    text-align: center;
-  }
-  
   .btn {
     width: 100%;
     background: linear-gradient(135deg, #4299e1 0%, #2b6cb0 100%);
@@ -400,17 +367,20 @@
     50% { transform: translateY(10px); }
   }
   
-  .team-single {
-    max-width: 500px;
-    margin: 0 auto;
+  /* Team Member Styles */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
   }
   
   .team-member {
     background: rgba(22, 22, 31, 0.85);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(66, 153, 225, 0.3);
-    border-radius: 30px;
-    padding: 48px;
+    border-radius: 20px;
+    padding: 32px;
     text-align: center;
     transition: all 0.3s ease;
   }
@@ -422,41 +392,39 @@
   }
   
   .member-avatar {
-    width: 180px;
-    height: 180px;
+    width: 120px;
+    height: 120px;
     background: linear-gradient(135deg, #4299e1, #7c6af7);
     border-radius: 50%;
-    margin: 0 auto 24px;
+    margin: 0 auto 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 72px;
+    font-size: 48px;
     font-weight: bold;
     color: white;
-    box-shadow: 0 0 40px rgba(66, 153, 225, 0.5);
+    box-shadow: 0 0 30px rgba(66, 153, 225, 0.4);
   }
   
   .member-name {
-    font-size: 36px;
-    font-weight: 800;
-    margin-bottom: 12px;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
     color: #fff;
   }
   
   .member-title {
-    font-size: 18px;
+    font-size: 14px;
     color: #4299e1;
     font-weight: 600;
-    margin-bottom: 24px;
-    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
   }
   
   .member-bio {
-    font-size: 16px;
+    font-size: 14px;
     color: #a0aec0;
-    line-height: 1.6;
-    max-width: 400px;
-    margin: 0 auto;
+    line-height: 1.5;
   }
   
   .story-text {
@@ -489,6 +457,7 @@
   </div>
 
   <div class="main">
+    <!-- Navigation Tabs -->
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('predictor')">🔮 Predictor</button>
       <button class="tab-btn" onclick="switchTab('story')">📖 Our Story</button>
@@ -505,19 +474,6 @@
       <div class="card">
         <div class="card-title">📚 Paste your syllabus, past exams, or class notes</div>
         <textarea id="syllabus" rows="8" placeholder="Paste your AP course syllabus here..."></textarea>
-      </div>
-
-      <div class="card">
-        <div class="card-title">📁 Or upload a file (TXT, PDF, DOCX, MD)</div>
-        <div class="file-upload-area" id="fileUploadArea">
-          <input type="file" id="fileInput" accept=".txt,.pdf,.docx,.md" style="display: none" onchange="handleFileUpload(event)">
-          <div class="file-upload-content" onclick="document.getElementById('fileInput').click()">
-            <div class="upload-icon">📄</div>
-            <p>Click or drag & drop to upload</p>
-            <p class="file-hint">Supports .txt, .pdf, .docx, .md files</p>
-          </div>
-        </div>
-        <div id="fileName" class="file-name" style="display: none"></div>
       </div>
 
       <div class="card">
@@ -553,11 +509,11 @@
       
       <div class="card">
         <div class="story-text">
-          <p>It was 3:47 AM on a Tuesday during finals week of my sophomore year. I had been studying for my AP Biology exam for six hours straight, drowning in flashcards, review books, and practice tests. My eyes were burning, my coffee was cold, and I had no idea if I was studying the right things.</p>
+          <p>It was 3:47 AM on a Tuesday during finals week of my sophomore year. I had been studying for my AP Biology exam for six hours straight, drowning in flashcards, review books, and practice tests. My eyes were burning, and I had no idea if I was studying the right things.</p>
           
           <p>That's when it hit me – what if there was a way to predict exactly what questions would show up on the exam? What if an AI could analyze my syllabus and tell me what to focus on?</p>
           
-          <p>I stayed up the rest of that night building the first prototype. It was ugly, it barely worked, and it crashed every five minutes. But when it actually predicted a question that showed up on my exam the next week... I knew I was onto something.</p>
+          <p>I stayed up the rest of that night building the first prototype. It was ugly, it barely worked, and it crashed every five minutes. But when it actually predicted half the questions that showed up on my exam the next week... I knew I was onto something.</p>
           
           <div class="quote">
             "That first correct prediction felt like magic. But it wasn't magic – it was pattern recognition, data analysis, and the power of AI. I realized that every AP exam has patterns, and if you can find them, you can predict them."
@@ -572,25 +528,25 @@
       </div>
     </div>
 
-    <!-- Tab 3: Meet the Team - Only Aryaman Subramanian -->
+    <!-- Tab 3: Meet the Team -->
     <div id="team-tab" class="tab-content">
       <div class="hero">
-        <h1>👥 Meet the <span>Founder</span></h1>
-        <p>The vision behind Exam Whisperer</p>
+        <h1>👥 Meet the <span>Team</span></h1>
+        <p>The brilliant minds behind Exam Whisperer</p>
       </div>
       
-      <div class="team-single">
+      <div class="team-grid">
         <div class="team-member">
           <div class="member-avatar">AS</div>
           <div class="member-name">Aryaman Subramanian</div>
           <div class="member-title">President & Founder</div>
-          <div class="member-bio">Aryaman founded Exam Whisperer after his own late-night study revelation. A passionate advocate for AI in education, he leads the company's vision and strategy. When he's not coding, you can find him reading about cognitive science or playing chess. His mission is to make studying smarter, not harder, for millions of students worldwide.</div>
+          <div class="member-bio">Aryaman founded Exam Whisperer after his own late-night study revelation. A passionate advocate for AI in education, he leads the company's vision and strategy. When he's not coding, you can find him reading about cognitive science or playing chess.</div>
         </div>
       </div>
     </div>
     
     <div class="scroll-hint">
-      🖱️ Scroll to explore the 3D brain | Drag to rotate camera
+      🖱️ Scroll to explore the 3D brain | Drag to rotate camera | Press to explore
     </div>
   </div>
 </div>
@@ -618,6 +574,7 @@
 
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(0, 2, 12);
+  camera.lookAt(0, 0, 0);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -782,97 +739,17 @@
 </script>
 
 <script>
-  // Tab switching - FIXED: no event parameter needed
   function switchTab(tabName) {
-    // Hide all tab contents
-    const tabs = document.querySelectorAll('.tab-content');
-    for (let i = 0; i < tabs.length; i++) {
-      tabs[i].classList.remove('active');
-    }
-    
-    // Remove active class from all buttons
-    const buttons = document.querySelectorAll('.tab-btn');
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].classList.remove('active');
-    }
-    
-    // Show selected tab
-    const selectedTab = document.getElementById(tabName + '-tab');
-    if (selectedTab) {
-      selectedTab.classList.add('active');
-    }
-    
-    // Add active class to clicked button
-    const clickedButton = event ? event.target : null;
-    if (clickedButton && clickedButton.classList) {
-      clickedButton.classList.add('active');
-    }
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    document.getElementById(`${tabName}-tab`).classList.add('active');
+    event.target.classList.add('active');
   }
 
-  // File upload handling
-  async function handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    
-    const fileNameDiv = document.getElementById('fileName');
-    fileNameDiv.textContent = '📎 ' + file.name;
-    fileNameDiv.style.display = 'block';
-    
-    const text = await readFileContent(file);
-    const syllabusTextarea = document.getElementById('syllabus');
-    const existingContent = syllabusTextarea.value;
-    
-    if (existingContent) {
-      syllabusTextarea.value = existingContent + '\n\n--- Uploaded File ---\n' + text;
-    } else {
-      syllabusTextarea.value = text;
-    }
-    
-    syllabusTextarea.style.borderColor = '#34d399';
-    setTimeout(function() {
-      syllabusTextarea.style.borderColor = '';
-    }, 2000);
-  }
-
-  function readFileContent(file) {
-    return new Promise(function(resolve, reject) {
-      const reader = new FileReader();
-      reader.onload = function(e) { resolve(e.target.result); };
-      reader.onerror = function(e) { reject(e.target.error); };
-      reader.readAsText(file);
-    });
-  }
-
-  // Drag and drop
-  const uploadArea = document.getElementById('fileUploadArea');
-  if (uploadArea) {
-    uploadArea.addEventListener('dragover', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      uploadArea.style.borderColor = '#4299e1';
-      uploadArea.style.background = 'rgba(66, 153, 225, 0.15)';
-    });
-    
-    uploadArea.addEventListener('dragleave', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      uploadArea.style.borderColor = 'rgba(66, 153, 225, 0.5)';
-      uploadArea.style.background = 'rgba(15, 15, 19, 0.6)';
-    });
-    
-    uploadArea.addEventListener('drop', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      uploadArea.style.borderColor = 'rgba(66, 153, 225, 0.5)';
-      uploadArea.style.background = 'rgba(15, 15, 19, 0.6)';
-      const file = e.dataTransfer.files[0];
-      if (file) {
-        handleFileUpload({ target: { files: [file] } });
-      }
-    });
-  }
-
-  // Prediction functions
   async function predict() {
     const syllabus = document.getElementById('syllabus').value.trim();
     const writing = document.getElementById('writing').value.trim();
@@ -889,3 +766,57 @@
       errorBox.style.display = 'block';
       return;
     }
+
+    btn.disabled = true;
+    loading.style.display = 'block';
+
+    try {
+      const res = await fetch('/api/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ syllabus, writing })
+      });
+      const data = await res.json();
+      if (data.questions && Array.isArray(data.questions)) {
+        displayResults(data);
+      } else {
+        errorBox.textContent = data.error || 'Something went wrong. Please try again.';
+        errorBox.style.display = 'block';
+      }
+    } catch (e) {
+      errorBox.textContent = 'Error: ' + e.message;
+      errorBox.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      loading.style.display = 'none';
+    }
+  }
+
+  function displayResults(data) {
+    const list = document.getElementById('questionsList');
+    list.innerHTML = '';
+    const questions = data.questions || [];
+    questions.forEach((q, idx) => {
+      const confidence = q.confidence || 75;
+      const confClass = confidence >= 80 ? 'conf-high' : confidence >= 65 ? 'conf-mid' : 'conf-low';
+      list.innerHTML += `
+        <div class="q-card">
+          <div class="q-num">${idx + 1}</div>
+          <div class="q-text">
+            ${escapeHtml(q.question)}
+            <div class="q-conf ${confClass}">${confidence}% likely · ${escapeHtml(q.topic || 'Key Concept')}</div>
+          </div>
+        </div>`;
+    });
+    document.getElementById('answerBox').innerHTML = escapeHtml(data.answer || 'No answer generated.').replace(/\n/g, '<br>');
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+</script>
+</body>
+</html>
