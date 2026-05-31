@@ -208,6 +208,7 @@
     color: #4a5568;
   }
   
+  /* File Upload Styles */
   .file-upload-area {
     border: 2px dashed rgba(66, 153, 225, 0.5);
     border-radius: 16px;
@@ -489,7 +490,6 @@
   </div>
 
   <div class="main">
-    <!-- Navigation Tabs -->
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('predictor', event)">🔮 Predictor</button>
       <button class="tab-btn" onclick="switchTab('story', event)">📖 Our Story</button>
@@ -508,6 +508,7 @@
         <textarea id="syllabus" rows="8" placeholder="Paste your AP course syllabus here..."></textarea>
       </div>
 
+      <!-- File Upload Section -->
       <div class="card">
         <div class="card-title">📁 Or upload a file (TXT, PDF, DOCX, MD)</div>
         <div class="file-upload-area" id="fileUploadArea">
@@ -554,7 +555,7 @@
       
       <div class="card">
         <div class="story-text">
-          <p>It was 3:47 AM on a Tuesday during finals week of my junior year. I had been studying for my AP Biology exam for six hours straight, drowning in flashcards, review books, and practice tests. My eyes were burning, my coffee was cold, and I had no idea if I was studying the right things.</p>
+          <p>It was 3:47 AM on a Tuesday during finals week of my sophomore year. I had been studying for my AP Biology exam for six hours straight, drowning in flashcards, review books, and practice tests. My eyes were burning, my coffee was cold, and I had no idea if I was studying the right things.</p>
           
           <p>That's when it hit me – what if there was a way to predict exactly what questions would show up on the exam? What if an AI could analyze my syllabus and tell me what to focus on?</p>
           
@@ -783,19 +784,15 @@
 </script>
 
 <script>
-  // Tab switching - FIXED with event parameter
+  // Tab switching
   function switchTab(tabName, event) {
-    // Hide all tabs
     document.querySelectorAll('.tab-content').forEach(tab => {
       tab.classList.remove('active');
     });
-    // Remove active class from all buttons
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.classList.remove('active');
     });
-    // Show selected tab
     document.getElementById(`${tabName}-tab`).classList.add('active');
-    // Add active class to clicked button
     if (event && event.target) {
       event.target.classList.add('active');
     }
@@ -900,4 +897,8 @@
     try {
       const res = await fetch('/api/predict', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ syllabus, writing })
+      });
+      const data = await res.json();
+      if (
